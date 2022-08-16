@@ -1,12 +1,17 @@
 <resources>
     <string name="app_name">Moim</string>
-    <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="login_title">팟팟팟팟</string>
+    <string name="login_button">로그인</string>
+    <string name="login_register">회원가입</string>
+    <string name="string_id">ID</string>
+    <string name="string_pw">PW</string>
+    <string name="main_welcome">%1$s님 하이!</string>
+    <string name="register_username">닉네임</string>
+    <string name="party_taxi">택시팟</string>
+    <string name="party_meal">밥약팟</string>
+    <string name="party_night_meal">야식팟</string>
+    <string name="party_study">공부팟</string>
+    <string name="party_project">프로젝트팟</string>
+    <string name="party_custom">나만의팟</string>
+    <string name="create_party">팟 만들기</string>
 </resources>
