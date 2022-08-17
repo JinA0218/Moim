@@ -28,5 +28,17 @@ interface RetrofitHandler {
     @GET("/party_list")
     fun getPartyList(
         @Query("party_type") partyType: String
-    ): Call<Party>
+    ): Call<List<Party>>
+
+    @POST("/create_party")
+    fun createParty(
+        @Body partyBody: Party,
+    ): Call<ResponseCreateParty>
+
+    @POST("/modify_party")
+    fun modifyParty(
+        @Body partyBody: Party,
+    ): Call<ResponseModifyParty>
+
+
 }

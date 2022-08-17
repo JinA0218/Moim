@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moim.databinding.ActivityPartyListBinding
 import com.example.moim.databinding.PartyItemBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class PartyListActivity: AppCompatActivity() {
     private lateinit var binding: ActivityPartyListBinding
@@ -46,6 +49,17 @@ class PartyListActivity: AppCompatActivity() {
         val partyList = mutableListOf<Party>()
 
         // TODO: HTTP 요청을 보낸다. Retrofit2 라이브러리를 활용하자.
+        retrofitHandler.getPartyList(partyTypeCommands[partyNumber]).enqueue(
+            object: Callback<List<Party>> {
+                override fun onResponse(call: Call<List<Party>>, response: Response<List<Party>>) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onFailure(call: Call<List<Party>>, t: Throwable) {
+                    TODO("Not yet implemented")
+                }
+            }
+        )
 
         return partyList
     }

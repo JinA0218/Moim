@@ -4,6 +4,7 @@
     android:layout_height="60dp">
 
     <android.widget.Button
+        android:id="@+id/button_temp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="TEST"
