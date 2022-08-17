@@ -5,6 +5,9 @@
     <string name="login_register">회원가입</string>
     <string name="string_id">ID</string>
     <string name="string_pw">PW</string>
+    <string name="string_age">나이</string>
+    <string name="string_place">지역</string>
+    <string name="check_duplicate">중복확인</string>
     <string name="main_welcome">%1$s님 하이!</string>
     <string name="register_username">닉네임</string>
     <string name="party_taxi">택시팟</string>
@@ -14,4 +17,17 @@
     <string name="party_project">프로젝트팟</string>
     <string name="party_custom">나만의팟</string>
     <string name="create_party">팟 만들기</string>
+
+    <string-array name="place1">
+        <item>대전광역시</item>
+    </string-array>
+
+    <string-array name="place3">
+        <item>유성구</item>
+        <item>대덕구</item>
+        <item>서구</item>
+        <item>중구</item>
+        <item>동구</item>
+    </string-array>
+
 </resources>
