@@ -6,39 +6,111 @@ import java.io.Serializable
 // TODO: IP 주소 계속 바꿔주기
 const val ipAddress = "143.248.195.111"
 
+abstract class Party(
+    open val common: CommonPartyAttributes
+)
+
 data class Place(
-    val place1: String,
+    @SerializedName("has_place")
+    val hasPlace: Boolean,
+    val place1: String?,
     val place2: String?,
-    val place3: String,
-): Serializable
+    val place3: String?,
+): Serializable {
+    fun toWrittenString(): String {
+        var output = ""
+
+        if (place1 != null) {
+            output = place1
+        }
+        if (place2 != null) {
+            output = "$output $place2"
+        }
+        if (place3 != null) {
+            output = "$output $place3"
+        }
+
+        return output.ifEmpty {
+            "지역 상관없음"
+        }
+    }
+}
 
 data class CommonPartyAttributes(
+    @SerializedName("party_id")
     val partyId: Int,
+    @SerializedName("party_name")
     val partyName: String,
-    val startPlace: Place,
-    val currentPeopleCount: Int,
-    val maximumPeopleCount: Int,
+    val place: Place,
+    @SerializedName("current_count")
+    val currentCount: Int,
+    @SerializedName("maximum_count")
+    val maximumCount: Int,
+    @SerializedName("detailed_description")
     val detailedDescription: String,
 ): Serializable
 
 data class TaxiParty(
+    override val common: CommonPartyAttributes,
+    val extra: TaxiExtra,
+): Party(common), Serializable
+
+data class TaxiExtra(
+    @SerializedName("detailed_start_place")
     val detailedStartPlace: String,
     val destination: String,
-    val date: Int,
-    val time: Int,
-    val currentPeopleCount: Int,
-    val maximumPeopleCount: Int,
+    @SerializedName("party_date")
+    val partyDate: Int,
+    @SerializedName("party_time")
+    val partyTime: Int,
 ): Serializable
 
+//data class TaxiParty(
+//    val common: CommonPartyAttributes,
+//    val detailedStartPlace: String,
+//    val destination: String,
+//    val date: Int,
+//    val time: Int,
+//): Serializable
+
 data class MealParty(
-    val partyId: Int,
-    val partyName: String,
+    override val common: CommonPartyAttributes,
+    val extra: MealExtra,
+): Party(common), Serializable
+
+data class MealExtra(
+    @SerializedName("meal_type")
+    val mealType: String,
     val outside: Boolean,
-    val date: Int,
-    val time: Int,
-    val currentPeopleCount: Int,
-    val maximumPeopleCount: Int,
-)
+    @SerializedName("party_date")
+    val partyDate: Int,
+    @SerializedName("party_time")
+    val partyTime: Int,
+): Serializable
+
+//data class MealParty(
+//    val common: CommonPartyAttributes,
+//    val mealType: String,
+//    val outside: Boolean,
+//    val date: Int,
+//    val time: Int,
+//): Serializable
+
+data class StudyParty(
+    override val common: CommonPartyAttributes
+): Party(common), Serializable
+
+data class CustomParty(
+    override val common: CommonPartyAttributes,
+): Party(common), Serializable
+
+//data class StudyParty(
+//    val common: CommonPartyAttributes,
+//): Serializable
+//
+//data class CustomParty(
+//    val common: CommonPartyAttributes,
+//): Serializable
 
 data class LoginInformation (
     val userid: String,
@@ -64,4 +136,8 @@ data class ResponseLogin(
 data class ResponseCreateParty(
     @SerializedName("party_id")
     val partyId: Int,
+): Serializable
+
+data class ResponseModifyParty(
+    val placeHolder: Int,
 ): Serializable

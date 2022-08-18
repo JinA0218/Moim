@@ -9,14 +9,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moim.databinding.ActivityPartyListBinding
 import com.example.moim.databinding.PartyItemBinding
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.CoroutineContext
 
-class PartyListActivity: AppCompatActivity() {
+class PartyListActivity: AppCompatActivity(), CoroutineScope {
     private lateinit var binding: ActivityPartyListBinding
-    private val partyTypeList = listOf("택시팟", "밥약팟", "야식팟", "공부팟", "프로젝트팟", "나만의팟")
-    private val partyTypeCommands = listOf("taxi", "meal", "nightmeal", "study", "project", "custom")
+    private val partyTypeList = listOf("택시팟", "밥약팟", "야식팟", "공부/프로젝트팟", "나만의팟")
+    private val partyTypeCommands = listOf("taxi-party", "meal-party", "night-meal-party", "study-party", "custom-party")
+
+    private val job = Job()
+    override val coroutineContext: CoroutineContext get() = Dispatchers.IO + job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +40,9 @@ class PartyListActivity: AppCompatActivity() {
 
         binding.textPartyListTitle.text = partyType
 
-        // TODO: HTTP 요청을 보내 쿼리 결과를 얻고 그 결과를 RecyclerView 에 반영한다.
         val partyList = getPartyList(partyNumber)
 
-        val partyAdapter = PartyAdapter()
+        val partyAdapter = PartyAdapter(partyNumber)
         partyAdapter.partyList = partyList
 
         binding.recyclerViewPartyList.adapter = partyAdapter
@@ -46,26 +50,29 @@ class PartyListActivity: AppCompatActivity() {
     }
 
     private fun getPartyList(partyNumber: Int): MutableList<Party> {
-        val partyList = mutableListOf<Party>()
-
         // TODO: HTTP 요청을 보낸다. Retrofit2 라이브러리를 활용하자.
-        retrofitHandler.getPartyList(partyTypeCommands[partyNumber]).enqueue(
-            object: Callback<List<Party>> {
-                override fun onResponse(call: Call<List<Party>>, response: Response<List<Party>>) {
-                    TODO("Not yet implemented")
-                }
+        val partyList = runBlocking {
+//            retrofitHandler.getPartyList(partyTypeCommands[partyNumber]).enqueue(
+//                object: Callback<List<Party>> {
+//                    override fun onResponse(call: Call<List<Party>>, response: Response<List<Party>>) {
+//
+//                        TODO("Not yet implemented")
+//                    }
+//
+//                    override fun onFailure(call: Call<List<Party>>, t: Throwable) {
+//                        TODO("Not yet implemented")
+//                    }
+//                }
+//            )
+            val response = retrofitHandler.getPartyList(partyTypeCommands[partyNumber])
+            response.execute().body()
+        }
 
-                override fun onFailure(call: Call<List<Party>>, t: Throwable) {
-                    TODO("Not yet implemented")
-                }
-            }
-        )
-
-        return partyList
+        return partyList?.toMutableList() ?: mutableListOf()
     }
 }
 
-class PartyAdapter: RecyclerView.Adapter<PartyAdapter.MyViewHolder>(){
+class PartyAdapter(private val partyNumber: Int): RecyclerView.Adapter<PartyAdapter.MyViewHolder>(){
     var partyList = mutableListOf<Party>()
     private lateinit var binding: PartyItemBinding
 
@@ -90,6 +97,57 @@ class PartyAdapter: RecyclerView.Adapter<PartyAdapter.MyViewHolder>(){
             //      해결책1: 다른 액티비티를 만든다.
             //      해결책2: 파티 종류에 따라 다르게 표시되도록 한다.
             val context = binding.root.context
+
+            when (partyNumber) {
+                0 -> {  // 택시
+                    val taxiParty = party as TaxiParty
+
+                    // TODO: 날짜 스트링, 시간 스트링
+                    val dateString = ""
+                    val timeString = ""
+
+                    binding.root.removeView(binding.upperSimple)
+                    binding.partyOption1.text = String.format(context.getString(R.string.taxi_option1), taxiParty.extra.detailedStartPlace)
+                    binding.partyOption2.text = String.format(context.getString(R.string.taxi_option2), taxiParty.extra.destination)
+                    binding.partyLowerOption.text = String.format(context.getString(R.string.party_datetime), dateString, timeString)
+                }
+                1, 2 -> {  // 밥약 + 야식
+                    val mealParty = party as MealParty
+                    val outside = if (mealParty.extra.outside) {
+                        "나가서 먹기"
+                    } else {
+                        "배달"
+                    }
+
+                    // TODO: 날짜 스트링, 시간 스트링
+                    val dateString = ""
+                    val timeString = ""
+
+                    binding.root.removeView(binding.upperSimple)
+                    binding.partyOption1.text = String.format(context.getString(R.string.taxi_option1), mealParty.extra.mealType)
+                    binding.partyOption2.text = String.format(context.getString(R.string.taxi_option2), outside)
+                    binding.partyLowerOption.text = String.format(context.getString(R.string.party_datetime), dateString, timeString)
+                }
+                3 -> {  // 공부/프로젝트
+                    val studyParty = party as StudyParty
+
+                    binding.partyLowerOption.text = studyParty.common.place.toWrittenString()
+                }
+                4 -> {  // 나만의
+                    val customParty = party as CustomParty
+
+                    binding.partyLowerOption.text = customParty.common.place.toWrittenString()
+                }
+                else -> throw Error("partyNumber error: $partyNumber is not a valid partyNumber")
+            }
+
+            // 공통
+            binding.partyNameComplex.text = party.common.partyName
+            binding.partyCount.text = String.format(
+                context.getString(R.string.party_count),
+                party.common.currentCount,
+                party.common.maximumCount
+            )
 //            binding.partyTypeItem.text = name
 //            binding.partyTypeItem.setOnClickListener {
 //                val intent = Intent(context, PartyListActivity::class.java)

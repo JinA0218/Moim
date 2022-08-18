@@ -29,7 +29,7 @@ class MainFragment: Fragment() {
 }
 
 class PartyTypeAdapter: RecyclerView.Adapter<PartyTypeAdapter.MyViewHolder>(){
-    private val nameList = listOf("택시팟", "밥약팟", "야식팟", "공부팟", "프로젝트팟", "나만의팟")
+    private val nameList = listOf("택시팟", "밥약팟", "야식팟", "공부/프로젝트팟", "나만의팟")
     private lateinit var binding: PartyTypeItemBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {

@@ -10,7 +10,7 @@ val retrofit: Retrofit = Retrofit.Builder().baseUrl("http://$ipAddress/")
 val retrofitHandler: RetrofitHandler = retrofit.create(RetrofitHandler::class.java)
 
 interface RetrofitHandler {
-    @GET("/register/duplicate_id")
+    @GET("/register/duplicate-id")
     fun checkDuplicateId(
         @Query("userid") userId: String
     ): Call<Unit>
@@ -25,17 +25,17 @@ interface RetrofitHandler {
         @Body registerBody: RegisterInformation,
     ): Call<Unit>
 
-    @GET("/party_list")
+    @GET("/party-list/{party_type}")
     fun getPartyList(
-        @Query("party_type") partyType: String
+        @Path("party_type") partyType: String
     ): Call<List<Party>>
 
-    @POST("/create_party")
+    @POST("/create-party")
     fun createParty(
         @Body partyBody: Party,
     ): Call<ResponseCreateParty>
 
-    @POST("/modify_party")
+    @POST("/modify-party")
     fun modifyParty(
         @Body partyBody: Party,
     ): Call<ResponseModifyParty>

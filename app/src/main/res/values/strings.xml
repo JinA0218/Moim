@@ -10,13 +10,24 @@
     <string name="check_duplicate">중복확인</string>
     <string name="main_welcome">%1$s님 하이!</string>
     <string name="register_username">닉네임</string>
-    <string name="party_taxi">택시팟</string>
-    <string name="party_meal">밥약팟</string>
-    <string name="party_night_meal">야식팟</string>
-    <string name="party_study">공부팟</string>
-    <string name="party_project">프로젝트팟</string>
-    <string name="party_custom">나만의팟</string>
     <string name="create_party">팟 만들기</string>
+    <string name="taxi_option1">출발지: %1$s</string>
+    <string name="taxi_option2">도착지: %1$s</string>
+    <string name="meal_option1">음식 종류: %1$s</string>
+    <string name="meal_option2">먹는 위치: %1$s</string>
+    <string name="party_datetime">%1$s %2$s</string>
+    <string name="party_place">%1$s</string>
+    <string name="party_count">%1$d / %2$d</string>
+
+    <string name="placeholder">PlaceHolder</string>
+
+    <string-array name="party_type">
+        <item>택시팟</item>
+        <item>밥약팟</item>
+        <item>야식팟</item>
+        <item>공부/프로젝트팟</item>
+        <item>나만의팟</item>
+    </string-array>
 
     <string-array name="place1">
         <item>대전광역시</item>

@@ -3,9 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Projects/Moim2/app/src/main/res/drawable/party_item_background.xml" value="0.1705" />
         <entry key="..\:/Projects/Moim2/app/src/main/res/layout/activity_create_party.xml" value="0.20923913043478262" />
         <entry key="..\:/Projects/Moim2/app/src/main/res/layout/activity_login.xml" value="0.1461499493414387" />
         <entry key="..\:/Projects/Moim2/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Projects/Moim2/app/src/main/res/layout/activity_party_description.xml" value="0.29375" />
         <entry key="..\:/Projects/Moim2/app/src/main/res/layout/activity_party_list.xml" value="0.20923913043478262" />
         <entry key="..\:/Projects/Moim2/app/src/main/res/layout/activity_register.xml" value="0.33" />
         <entry key="..\:/Projects/Moim2/app/src/main/res/layout/activity_settings.xml" value="0.17255434782608695" />
