@@ -1,12 +1,16 @@
 <resources>
     <string name="app_name">Moim</string>
+
     <string name="login_title">팟팟팟팟</string>
     <string name="login_button">로그인</string>
     <string name="login_register">회원가입</string>
+
     <string name="string_id">ID</string>
     <string name="string_pw">PW</string>
     <string name="string_age">나이</string>
     <string name="string_place">지역</string>
+    <string name="string_back">뒤로가기</string>
+
     <string name="check_duplicate">중복확인</string>
     <string name="main_welcome">%1$s님 하이!</string>
     <string name="register_username">닉네임</string>
@@ -15,9 +19,11 @@
     <string name="taxi_option2">도착지: %1$s</string>
     <string name="meal_option1">음식 종류: %1$s</string>
     <string name="meal_option2">먹는 위치: %1$s</string>
+
     <string name="party_datetime">%1$s %2$s</string>
     <string name="party_place">%1$s</string>
     <string name="party_count">%1$d / %2$d</string>
+
 
     <string name="placeholder">PlaceHolder</string>
 

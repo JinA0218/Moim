@@ -25,10 +25,20 @@ interface RetrofitHandler {
         @Body registerBody: RegisterInformation,
     ): Call<Unit>
 
-    @GET("/party-list/{party_type}")
-    fun getPartyList(
-        @Path("party_type") partyType: String
-    ): Call<List<Party>>
+    @GET("/party-list/taxi-party")
+    fun getTaxiPartyList(): Call<MutableList<TaxiParty>>
+
+    @GET("/party-list/meal-party")
+    fun getMealPartyList(): Call<MutableList<MealParty>>
+
+    @GET("/party-list/night-meal-party")
+    fun getNightMealPartyList(): Call<MutableList<MealParty>>
+
+    @GET("/party-list/study-party")
+    fun getStudyPartyList(): Call<MutableList<StudyParty>>
+
+    @GET("/party-list/custom-party")
+    fun getCustomPartyList(): Call<MutableList<CustomParty>>
 
     @POST("/create-party")
     fun createParty(

@@ -4,11 +4,14 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 // TODO: IP 주소 계속 바꿔주기
-const val ipAddress = "143.248.195.111"
+const val ipAddress = "143.248.195.105"
 
-abstract class Party(
-    open val common: CommonPartyAttributes
-)
+//abstract class Party(
+//    open val common: CommonPartyAttributes
+//)
+interface Party {
+    val common: CommonPartyAttributes
+}
 
 data class Place(
     @SerializedName("has_place")
@@ -41,6 +44,8 @@ data class CommonPartyAttributes(
     val partyId: Int,
     @SerializedName("party_name")
     val partyName: String,
+    @SerializedName("party_head")
+    val partyHead: String,
     val place: Place,
     @SerializedName("current_count")
     val currentCount: Int,
@@ -53,7 +58,7 @@ data class CommonPartyAttributes(
 data class TaxiParty(
     override val common: CommonPartyAttributes,
     val extra: TaxiExtra,
-): Party(common), Serializable
+): Party
 
 data class TaxiExtra(
     @SerializedName("detailed_start_place")
@@ -76,7 +81,7 @@ data class TaxiExtra(
 data class MealParty(
     override val common: CommonPartyAttributes,
     val extra: MealExtra,
-): Party(common), Serializable
+): Party, Serializable
 
 data class MealExtra(
     @SerializedName("meal_type")
@@ -98,11 +103,11 @@ data class MealExtra(
 
 data class StudyParty(
     override val common: CommonPartyAttributes
-): Party(common), Serializable
+): Party, Serializable
 
 data class CustomParty(
     override val common: CommonPartyAttributes,
-): Party(common), Serializable
+): Party, Serializable
 
 //data class StudyParty(
 //    val common: CommonPartyAttributes,

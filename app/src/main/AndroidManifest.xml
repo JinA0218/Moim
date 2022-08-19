@@ -37,6 +37,15 @@
         <activity android:name=".PartyListActivity">
 
         </activity>
+
+        <activity android:name=".CreatePartyActivity">
+
+        </activity>
+        <activity
+            android:name=".PartyDescriptionActivity"
+            android:theme="@style/Theme.Moim.NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>
