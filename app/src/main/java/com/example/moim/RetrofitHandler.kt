@@ -40,6 +40,17 @@ interface RetrofitHandler {
     @GET("/party-list/custom-party")
     fun getCustomPartyList(): Call<MutableList<CustomParty>>
 
+    @GET("/username")
+    fun getUsername(
+        @Query("userid") userId: String
+    ): Call<ResponseUsername>
+
+    @POST("/join-party/{party_type}")
+    fun joinParty(
+        @Path("party_type") partyType: String,
+        @Body joinBody: PartyJoinInformation
+    ): Call<Unit>
+
     @POST("/create-party")
     fun createParty(
         @Body partyBody: Party,
@@ -50,5 +61,6 @@ interface RetrofitHandler {
         @Body partyBody: Party,
     ): Call<ResponseModifyParty>
 
-
+    @GET("/liked-party")
+    fun getLikedPartyList(): Call<MutableList<Party>>
 }

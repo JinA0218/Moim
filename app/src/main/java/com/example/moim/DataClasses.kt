@@ -6,16 +6,32 @@ import java.io.Serializable
 // TODO: IP 주소 계속 바꿔주기
 const val ipAddress = "143.248.195.105"
 
-//abstract class Party(
-//    open val common: CommonPartyAttributes
-//)
-interface Party {
+object PartyTypeNumber {
+    const val Taxi = 0
+    const val Meal = 1
+    const val NightMeal = 2
+    const val Study = 3
+    const val Custom = 4
+}
+
+fun partyTypeString(partyTypeNumber: Int): String {
+    return when (partyTypeNumber) {
+        PartyTypeNumber.Taxi -> "taxi-party"
+        PartyTypeNumber.Meal -> "meal-party"
+        PartyTypeNumber.NightMeal -> "night-meal-party"
+        PartyTypeNumber.Study -> "study-party"
+        PartyTypeNumber.Custom -> "custom-party"
+        else -> throw Error("?!")
+    }
+}
+
+interface Party: Serializable {
     val common: CommonPartyAttributes
 }
 
 data class Place(
     @SerializedName("has_place")
-    val hasPlace: Boolean,
+    val hasPlace: Int,
     val place1: String?,
     val place2: String?,
     val place3: String?,
@@ -53,6 +69,8 @@ data class CommonPartyAttributes(
     val maximumCount: Int,
     @SerializedName("detailed_description")
     val detailedDescription: String,
+    @SerializedName("count_difference")
+    val countDifference: Int
 ): Serializable
 
 data class TaxiParty(
@@ -65,9 +83,9 @@ data class TaxiExtra(
     val detailedStartPlace: String,
     val destination: String,
     @SerializedName("party_date")
-    val partyDate: Int,
+    val partyDate: String,
     @SerializedName("party_time")
-    val partyTime: Int,
+    val partyTime: String,
 ): Serializable
 
 //data class TaxiParty(
@@ -88,9 +106,9 @@ data class MealExtra(
     val mealType: String,
     val outside: Boolean,
     @SerializedName("party_date")
-    val partyDate: Int,
+    val partyDate: String,
     @SerializedName("party_time")
-    val partyTime: Int,
+    val partyTime: String,
 ): Serializable
 
 //data class MealParty(
@@ -132,6 +150,11 @@ data class RegisterInformation (
     val place3: String,         // 구
 ): Serializable
 
+data class PartyJoinInformation(
+    val userid: String,
+    @SerializedName("party_id")
+    val partyId: Int,
+): Serializable
 
 // Retrofit2 API 와 연결해서 사용할 것
 data class ResponseLogin(
@@ -145,4 +168,8 @@ data class ResponseCreateParty(
 
 data class ResponseModifyParty(
     val placeHolder: Int,
+): Serializable
+
+data class ResponseUsername(
+    val username: String,
 ): Serializable

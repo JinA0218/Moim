@@ -24,6 +24,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // TODO: 로그인 되어있는지 체크하자.
+        //      로그인이 되어있지 않다면 LoginActivity 로 넘겨준다.
+
         sharedManager = SharedManager(this)
 
         // 환영 문구를 사용자의 이름에 맞춰서 적어보자.

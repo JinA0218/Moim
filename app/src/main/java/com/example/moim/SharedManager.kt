@@ -17,6 +17,14 @@ class SharedManager(context: Context) {
         return prefs["username"]
     }
 
+    fun saveUserId(userid: String) {
+        prefs["userid"] = userid
+    }
+
+    fun getUserId(): String {
+        return prefs["userid"]
+    }
+
     fun setLoggedIn(boolean: Boolean) {
         prefs["login"] = boolean
     }

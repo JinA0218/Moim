@@ -23,6 +23,7 @@
     <string name="party_datetime">%1$s %2$s</string>
     <string name="party_place">%1$s</string>
     <string name="party_count">%1$d / %2$d</string>
+    <string name="party_head">방장: %1$s</string>
 
 
     <string name="placeholder">PlaceHolder</string>

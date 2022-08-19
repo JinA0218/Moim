@@ -46,6 +46,7 @@ class LoginActivity: AppCompatActivity() {
                             if (response.isSuccessful) {
                                 Log.d("LOGIN", response.body()!!.toString())
                                 sharedManager.saveUsername(response.body()!!.username)
+                                sharedManager.saveUserId(idText)
                                 startActivity(intent)
                             }
                             else {

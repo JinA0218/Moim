@@ -1,10 +1,13 @@
 package com.example.moim
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,7 +23,6 @@ import kotlin.coroutines.CoroutineContext
 class PartyListActivity: AppCompatActivity(), CoroutineScope {
     private lateinit var binding: ActivityPartyListBinding
     private val partyTypeList = listOf("택시팟", "밥약팟", "야식팟", "공부/프로젝트팟", "나만의팟")
-    private val partyTypeCommands = listOf("taxi-party", "meal-party", "night-meal-party", "study-party", "custom-party")
 
     private val job = Job()
     override val coroutineContext: CoroutineContext get() = Dispatchers.IO + job
@@ -87,6 +89,7 @@ class PartyListActivity: AppCompatActivity(), CoroutineScope {
 class PartyAdapter(private val partyNumber: Int): RecyclerView.Adapter<PartyAdapter.MyViewHolder>(){
     var partyList = mutableListOf<Party>()
     private lateinit var binding: PartyItemBinding
+    private lateinit var itemClickListener: OnItemClickListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         binding = PartyItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
@@ -96,9 +99,22 @@ class PartyAdapter(private val partyNumber: Int): RecyclerView.Adapter<PartyAdap
     override fun getItemCount(): Int = partyList.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        holder.itemView.setOnClickListener {
+            itemClickListener.onClick(it, position)
+        }
         holder.bind(partyList[position])
     }
-    inner class MyViewHolder(private val binding: PartyItemBinding) : RecyclerView.ViewHolder(binding.root) {
+
+    // TODO: 클릭 이벤트 처리!
+    interface OnItemClickListener {
+        fun onClick(v: View, position: Int)
+    }
+
+    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
+        this.itemClickListener = onItemClickListener
+    }
+
+    inner class MyViewHolder(private val binding: PartyItemBinding, ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(party: Party) {
             val context = binding.root.context
 
@@ -159,8 +175,9 @@ class PartyAdapter(private val partyNumber: Int): RecyclerView.Adapter<PartyAdap
 //                context.startActivity(intent)
 //            }
             binding.root.setOnClickListener {
-                // TODO
-                Toast.makeText(context, "hi", Toast.LENGTH_SHORT).show()
+                val intent = Intent(context, PartyDescriptionActivity::class.java)
+                intent.putExtra("party_info", party)
+                intent.putExtra("party_type_number", partyNumber)
             }
         }
     }
