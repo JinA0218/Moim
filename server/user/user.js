@@ -2,7 +2,7 @@ import express from 'express';
 import { hash_password, verify } from './encrypt.js';
 import debug from '../debug.js';
 import {connection} from '../config/connection.js';
-import {getPartyList, createTaxiParty, joinParty, leaveParty} from '../party/partyList.js';
+import {getPartyList, createTaxiParty, joinParty, leaveParty, editTaxiParty} from '../party/partyList.js';
 
 global.global_id=0;
 var id_array=[0,0,0,0,0];//order same as table order : taxi, meal, etc
@@ -201,14 +201,21 @@ app.get("/username",(req, res)=>{
 //show partyList
 app.get("/party-list/:type", getPartyList);
 
-//create new taxi-party (insert into taxi_party table)
-app.post("/create-party/taxi-party",createTaxiParty);
-
 //insert new (party_id, userid) into party_user
 app.post("/join-party/:type",joinParty);
 
 //delete (party_id, userid) in party_user
 app.post("/leave-party/:type",leaveParty);
+
+//create new taxi-party (insert into taxi_party table)
+app.post("/create-party/taxi-party", createTaxiParty);
+
+//edit taxi-party
+app.post("/edit-party/taxi-party", editTaxiParty);
+
+//get : 성혁오빠가 요청 보냈을 때
+
+//delete type (taxi-party, meal-party etc)
 // connection.end();
 
 app.listen(port,()=>{
