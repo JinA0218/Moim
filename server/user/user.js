@@ -2,7 +2,7 @@ import express from 'express';
 import { hash_password, verify } from './encrypt.js';
 import debug from '../debug.js';
 import {connection} from '../config/connection.js';
-import {getPartyList, createTaxiParty, joinParty} from '../party/partyList.js';
+import {getPartyList, createTaxiParty, joinParty, leaveParty} from '../party/partyList.js';
 
 global.global_id=0;
 var id_array=[0,0,0,0,0];//order same as table order : taxi, meal, etc
@@ -207,6 +207,8 @@ app.post("/create-party/taxi-party",createTaxiParty);
 //insert new (party_id, userid) into party_user
 app.post("/join-party/:type",joinParty);
 
+//delete (party_id, userid) in party_user
+app.post("/leave-party/:type",leaveParty);
 // connection.end();
 
 app.listen(port,()=>{
