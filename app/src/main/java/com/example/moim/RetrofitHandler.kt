@@ -45,14 +45,21 @@ interface RetrofitHandler {
         @Query("userid") userId: String
     ): Call<ResponseUsername>
 
+    @GET("/party")
+    fun getParty(
+        @Query("party_id") partyId: Int,
+        @Query("type") partyType: String,
+    ): Call<Party>
+
     @POST("/join-party/{party_type}")
     fun joinParty(
         @Path("party_type") partyType: String,
         @Body joinBody: PartyJoinInformation
     ): Call<Unit>
 
-    @POST("/create-party")
+    @POST("/create-party/{party_type}")
     fun createParty(
+        @Path("party_type") partyType: String,
         @Body partyBody: Party,
     ): Call<ResponseCreateParty>
 
@@ -63,4 +70,9 @@ interface RetrofitHandler {
 
     @GET("/liked-party")
     fun getLikedPartyList(): Call<MutableList<Party>>
+
+    @GET("party-user-list/{party_id}")
+    fun getPartyUserList(
+        @Path("party_id") partyId: Int,
+    ): Call<MutableList<UserInformation>>
 }

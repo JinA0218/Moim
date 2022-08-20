@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 // TODO: IP 주소 계속 바꿔주기
-const val ipAddress = "143.248.195.105"
+const val ipAddress = "192.168.56.1"
 
 object PartyTypeNumber {
     const val Taxi = 0
@@ -21,6 +21,17 @@ fun partyTypeString(partyTypeNumber: Int): String {
         PartyTypeNumber.NightMeal -> "night-meal-party"
         PartyTypeNumber.Study -> "study-party"
         PartyTypeNumber.Custom -> "custom-party"
+        else -> throw Error("?!")
+    }
+}
+
+fun partyTypeKorean(partyTypeNumber: Int): String {
+    return when (partyTypeNumber) {
+        PartyTypeNumber.Taxi -> "택시팟"
+        PartyTypeNumber.Meal -> "밥약팟"
+        PartyTypeNumber.NightMeal -> "야식팟"
+        PartyTypeNumber.Study -> "공부/프로젝트팟"
+        PartyTypeNumber.Custom -> "나만의팟"
         else -> throw Error("?!")
     }
 }
@@ -104,7 +115,7 @@ data class MealParty(
 data class MealExtra(
     @SerializedName("meal_type")
     val mealType: String,
-    val outside: Boolean,
+    val outside: Int,
     @SerializedName("party_date")
     val partyDate: String,
     @SerializedName("party_time")
@@ -150,6 +161,11 @@ data class RegisterInformation (
     val place3: String,         // 구
 ): Serializable
 
+data class UserInformation (
+    val userid: String,
+    val username: String,
+): Serializable
+
 data class PartyJoinInformation(
     val userid: String,
     @SerializedName("party_id")
@@ -172,4 +188,9 @@ data class ResponseModifyParty(
 
 data class ResponseUsername(
     val username: String,
+): Serializable
+
+data class ResponseJoinParty(
+    @SerializedName("current_count")
+    val currentCount: Int
 ): Serializable

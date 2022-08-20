@@ -19,13 +19,20 @@ class PartyDescriptionActivity: AppCompatActivity() {
         binding = ActivityPartyDescriptionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // TODO: intent 로 파티 오브젝트를 넘겨받지 말고, HTTP POST 요청을 보내 최신 정보를 가져오자.
+        //      새로고침 버튼을 넣으면 해소 가능.
+
         val partyInformation = intent.extras?.getSerializable("party_info")!! as Party
         val partyTypeNumber = intent.extras?.getInt("party_type_number")!!
 
         // 공통 요소들 세팅
         binding.textPartyHead.text = ""
         binding.textPartyDescription.text = partyInformation.common.detailedDescription
-        binding.textPartyCount.text = String.format(getString(R.string.party_count))
+        binding.textPartyCount.text = String.format(
+            getString(R.string.party_count),
+            partyInformation.common.currentCount,
+            partyInformation.common.maximumCount
+        )
         binding.textPartyName.text = partyInformation.common.partyName
         binding.textPartyPlace.text = partyInformation.common.place.toWrittenString()
 

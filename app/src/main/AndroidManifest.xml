@@ -46,6 +46,11 @@
             android:theme="@style/Theme.Moim.NoActionBar">
 
         </activity>
+        <activity
+            android:name=".PartyChatActivity"
+            android:theme="@style/Theme.Moim.NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>

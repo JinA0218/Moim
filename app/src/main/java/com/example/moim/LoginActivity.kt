@@ -48,6 +48,7 @@ class LoginActivity: AppCompatActivity() {
                                 sharedManager.saveUsername(response.body()!!.username)
                                 sharedManager.saveUserId(idText)
                                 startActivity(intent)
+                                finish()
                             }
                             else {
                                 Toast.makeText(context, "ID 또는 비밀번호를 다시 확인해주세요.", Toast.LENGTH_SHORT).show()

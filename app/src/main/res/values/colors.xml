@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="indigo1">#FF2020A0</color>
     <color name="indigo2">#FF3030C0</color>
+    <color name="gray">#FF666666</color>
 </resources>

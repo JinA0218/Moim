@@ -44,6 +44,18 @@
         android:text="@string/placeholder"
         />
 
+    <android.widget.Button
+        android:id="@+id/img_button_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/like"
+        app:layout_constraintTop_toTopOf="@id/text_party_name"
+        app:layout_constraintBottom_toBottomOf="@id/text_party_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="30dp"
+        android:text="@string/hi"
+        />
+
     <TextView
         android:id="@+id/text_party_time"
         android:layout_width="wrap_content"
