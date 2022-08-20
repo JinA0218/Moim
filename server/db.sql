@@ -95,3 +95,8 @@ create table if not exists custom_party(
     count_difference int(2) not null,
     detailed_description varchar(500) character set utf8 collate utf8_general_ci not null
 );
+
+create table if not exists party_user(
+    party_id int(6) not null,
+    userid varchar(20) not null
+);

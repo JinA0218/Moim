@@ -2,7 +2,7 @@ import express from 'express';
 import { hash_password, verify } from './encrypt.js';
 import debug from '../debug.js';
 import {connection} from '../config/connection.js';
-import {getPartyList, createTaxiParty} from '../party/partyList.js';
+import {getPartyList, createTaxiParty, joinParty} from '../party/partyList.js';
 
 global.global_id=0;
 var id_array=[0,0,0,0,0];//order same as table order : taxi, meal, etc
@@ -168,12 +168,44 @@ app.get("/register/duplicate-id", (req, res) => {
     }
 });
 
+//when the user clicked a partyList row, send the username to the client
+app.get("/username",(req, res)=>{
+    const userid=req.query.userid;
+    
+    debug(`GET /username\tuserid: ${userid}`);
+
+    if (userid != undefined ) {
+        connection.query('select username from users where userid=?',[userid], async(error, rows, field)=>{
+            if (error) {
+                // Query error.->mysql error: not null but null or not database or no table etc
+                debug("getting username failed due to query error.");
+                debug(error.message);
+                res.status(400).send(error.message);
+            }
+            else if(rows.length==0){
+                debug("There is no such userid.");
+                res.status(400).send("There is no such userid.");
+            }
+            else {
+                debug("Rows : "+JSON.stringify(rows));//rows: 배열->해당 party들의 배열
+                debug(`getting username success. sending : ${JSON.stringify(rows[0])}`);
+                res.status(200).send(rows[0]);
+            }
+        });
+    }
+    else{
+        res.status(400).send("Bad request body; you must include userid.");
+    }
+});
 
 //show partyList
 app.get("/party-list/:type", getPartyList);
 
-//create new party
+//create new taxi-party (insert into taxi_party table)
 app.post("/create-party/taxi-party",createTaxiParty);
+
+//insert new (party_id, userid) into party_user
+app.post("/join-party/:type",joinParty);
 
 // connection.end();
 
