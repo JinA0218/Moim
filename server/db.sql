@@ -98,5 +98,6 @@ create table if not exists custom_party(
 
 create table if not exists party_user(
     party_id int(6) not null,
-    userid varchar(20) not null
+    userid varchar(20) not null,
+    username varchar(20) character set utf8 collate utf8_general_ci not null
 );

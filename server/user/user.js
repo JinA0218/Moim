@@ -2,7 +2,8 @@ import express from 'express';
 import { hash_password, verify } from './encrypt.js';
 import debug from '../debug.js';
 import {connection} from '../config/connection.js';
-import {getPartyList, createTaxiParty, joinParty, leaveParty, editTaxiParty} from '../party/partyList.js';
+import {getPartyList, createTaxiParty, joinParty, leaveParty, editTaxiParty, getParty} from '../party/partyList.js';
+import {getPartyUserList} from '../chatting/partyUserList.js'
 
 global.global_id=0;
 var id_array=[0,0,0,0,0];//order same as table order : taxi, meal, etc
@@ -213,7 +214,12 @@ app.post("/create-party/taxi-party", createTaxiParty);
 //edit taxi-party
 app.post("/edit-party/taxi-party", editTaxiParty);
 
-//get : 성혁오빠가 요청 보냈을 때
+//get : 성혁오빠가 요청 보냈을 때->full description 정보들 보여주기//party_id(url: party_id), type query string으로 받음.
+app.get("/party", getParty);
+
+//  CHATTING
+//get party-user-list
+app.get("/party-user-list/:party_id", getPartyUserList);//get party-id from client
 
 //delete type (taxi-party, meal-party etc)
 // connection.end();
