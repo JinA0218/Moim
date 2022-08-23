@@ -2,8 +2,9 @@ import express from 'express';
 import { hash_password, verify } from './encrypt.js';
 import debug from '../debug.js';
 import {connection} from '../config/connection.js';
-import {getPartyList, createTaxiParty, joinParty, leaveParty, editTaxiParty, getParty} from '../party/partyList.js';
+import {getPartyList, createTaxiParty, joinParty, leaveParty, editTaxiParty, getParty, deleteParty} from '../party/partyList.js';
 import {getPartyUserList} from '../chatting/partyUserList.js'
+import {myParty} from '../party/myParty.js';
 
 global.global_id=0;
 var id_array=[0,0,0,0,0];//order same as table order : taxi, meal, etc
@@ -222,6 +223,11 @@ app.get("/party", getParty);
 app.get("/party-user-list/:party_id", getPartyUserList);//get party-id from client
 
 //delete type (taxi-party, meal-party etc)
+app.post('/delete-party/:type', deleteParty);
+
+//showing my party
+app.get('/my-party/:userid',myParty);
+
 // connection.end();
 
 app.listen(port,()=>{

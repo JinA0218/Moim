@@ -597,5 +597,73 @@ const getParty=function (req, res){
     }
 }
 
+//delete-party
+const deleteParty=function (req, res){
+    const input_type=req.params.type;
+    const type=input_type.replace('-','_');
+    const party_id=req.body.party_id;
 
-export {getPartyList, createTaxiParty, joinParty, leaveParty, editTaxiParty, getParty};
+    debug(`POST /delete-party/\tTYPE : ${type}, PARTY ID : ${party_id}`);
+    
+    if(type!==undefined && party_id!==undefined){
+        //check whether the type exists
+        const type_arr=['taxi_party', 'meal_party', 'night_meal_party','study_party','custom_party']
+        if(type_arr.includes(type)){//type exists
+            debug(`TYPE : ${type} exists.`)
+            //check whether party_id exists
+            connection.query('select * from ?? where party_id=?', [type, party_id], async(error, rows, field)=>{
+                if(error){
+                    // Query error.
+                    debug("deleteParty failed due to query error 0");
+                    debug(error.message);
+                    res.status(400).send(error.message);
+                }
+                else if(rows.length==0){
+                    debug(`PARTY ID ${party_id} doesn't exist.`);
+                    res.status(400).send("PARTY ID doesn't exist.");
+                }
+                else{//PARTY ID exists
+                    //delete that party in type table / delete users in party_user table
+                    connection.query('delete from ?? where party_id=?', [type, party_id], async (error, rows, field) =>{
+                    if (error) {
+                        // Query error.
+                        debug("deleteParty failed due to query error 1");
+                        debug(error.message);
+                        res.status(400).send(error.message);
+                    }
+                    else {
+                        debug(`deleteParty PARTY ID : ${party_id} in TYPE : ${type} succeed.`);
+                        debug(`ROWS : ${JSON.stringify(rows)}`)
+
+                        //delete users in party_user included in that party_id
+                        connection.query('delete from party_user where party_id=?', [party_id], async(error, rows, field)=>{
+                            if(error){
+                                // Query error again..
+                                debug("deleteParty failed due to query error 2");
+                                debug(error.message);
+                                res.status(400).send(error.message);
+                            }
+                            else{
+                                debug(`deleteParty in party_user succeed.`);
+                                res.status(200).send(`deleteParty in table TYPE : ${type}, party_user succeed.`);
+                            }
+                        })
+                    }
+                });
+                    
+                }
+            })
+        }
+        else{
+            debug(`TYPE : ${type} doesn't exist.`)
+            res.status(400).send("TYPE doesn't exist.");
+        }
+        
+    }
+    else {
+        res.status(400).send("Bad request body; you must include type or party_id.");
+    }
+}
+
+
+export {getPartyList, createTaxiParty, joinParty, leaveParty, editTaxiParty, getParty, deleteParty};
