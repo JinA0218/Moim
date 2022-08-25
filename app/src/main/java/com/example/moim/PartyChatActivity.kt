@@ -133,6 +133,12 @@ class PartyChatActivity: AppCompatActivity(), CoroutineScope {
         }
 //        chatAdapter.addChat(chatItem)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        socket.disconnect()
+    }
 }
 
 class ChatAdapter: RecyclerView.Adapter<ChatAdapter.MyViewHolder>(){
@@ -157,28 +163,37 @@ class ChatAdapter: RecyclerView.Adapter<ChatAdapter.MyViewHolder>(){
         private val userid = sharedManager.getUserId()
 
         fun bind(chatItem: ChatItem) {
+            binding.root.removeView(binding.constraintOthersChat)
+            binding.root.removeView(binding.constraintMyChat)
+            binding.root.removeView(binding.textJoinOrLeave)
             // 챗의 종류에 따라 보이는 요소 바꾸기
             when (chatItem.chatType) {
                 "chat" -> {
                     if (username == chatItem.username && userid == chatItem.userid) {
                         // 내 채팅이다.
-                        binding.root.removeView(binding.constraintOthersChat)
+                        binding.root.addView(binding.constraintMyChat)
                         binding.myTextTime.text = parseTimeString(chatItem.chatTime)
                         binding.myTextChatContent.text = chatItem.chatContent
                     }
                     else {
                         // 남의 채팅이다.
-                        binding.root.removeView(binding.constraintMyChat)
+                        binding.root.addView(binding.constraintOthersChat)
                         binding.othersTextUsername.text = chatItem.username
                         binding.othersTextTime.text = parseTimeString(chatItem.chatTime)
                         binding.othersTextChatContent.text = chatItem.chatContent
                     }
                 }
                 "join" -> {
-                    // TODO: Join 메시지의 경우.
+                    binding.root.addView(binding.textJoinOrLeave)
+                    binding.textJoinOrLeave.text =
+                        String.format(binding.root.context.getString(R.string.chat_join), chatItem.username)
+//                        "${chatItem.username} 님이 입장했습니다."
                 }
                 "leave" -> {
-                    // TODO: Leave 메시지의 경우. 두 경우 모두 뷰 추가가 필요하다.
+                    binding.root.addView(binding.textJoinOrLeave)
+                    binding.textJoinOrLeave.text =
+                        String.format(binding.root.context.getString(R.string.chat_leave), chatItem.username)
+//                        "${chatItem.username} 님이 나갔습니다."
                 }
                 "new_date" -> {
                     Unit

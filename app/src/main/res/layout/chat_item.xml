@@ -89,7 +89,14 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+    <TextView
+        android:id="@+id/text_join_or_leave"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textColor="@color/gray"
+        android:textSize="16sp"
+        />
 
 
 
