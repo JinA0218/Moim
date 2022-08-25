@@ -104,11 +104,13 @@ class PartyChatActivity: AppCompatActivity(), CoroutineScope {
         }
 
         binding.buttonMenu.setOnClickListener {
+            // TODO: 이거 왜 작동 안함???????
             val popupMenu = PopupMenu(this, it)
             menuInflater.inflate(R.menu.popup, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.action_menu_info -> {
+                        // TODO: PartyManagerActivity 로 넘겨주기
                         val intent = Intent(this, PartyManagerActivity::class.java)
                     }
                     R.id.action_menu_leave -> {
@@ -126,12 +128,10 @@ class PartyChatActivity: AppCompatActivity(), CoroutineScope {
         Log.d("RECEIVED", args[0].toString())
         val chatItem = gson.fromJson(args[0].toString(), ChatItem::class.java)
         this.runOnUiThread {
-//            chatAdapter.addChat(chatItem)
             chatAdapter.chatList.add(0, chatItem)
             chatAdapter.notifyItemInserted(0)
             binding.recyclerChat.scrollToPosition(0)
         }
-//        chatAdapter.addChat(chatItem)
     }
 
     override fun onDestroy() {
