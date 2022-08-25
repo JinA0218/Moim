@@ -313,7 +313,9 @@ data class LikeInformation(
     val username: String,
     @SerializedName("party_id")
     val partyId: Int,
-    val liked: Boolean,
+    val liked: Int,
+    @SerializedName("party_type")
+    val partyType: String,
 ): Serializable
 
 // Retrofit2 API 와 연결해서 사용할 것

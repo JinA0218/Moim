@@ -123,10 +123,13 @@ class PartyChatActivity: AppCompatActivity(), CoroutineScope {
     }
 
     private val onChatMessage = Emitter.Listener { args ->
-        val chatItem = gson.fromJson(gson.toJson(args[0]), ChatItem::class.java)
-        Log.d("RECEIVE", "$chatItem")
+        Log.d("RECEIVED", args[0].toString())
+        val chatItem = gson.fromJson(args[0].toString(), ChatItem::class.java)
         this.runOnUiThread {
-            chatAdapter.addChat(chatItem)
+//            chatAdapter.addChat(chatItem)
+            chatAdapter.chatList.add(0, chatItem)
+            chatAdapter.notifyItemInserted(0)
+            binding.recyclerChat.scrollToPosition(0)
         }
 //        chatAdapter.addChat(chatItem)
     }
@@ -149,18 +152,11 @@ class ChatAdapter: RecyclerView.Adapter<ChatAdapter.MyViewHolder>(){
         holder.bind(chatList[position])
     }
 
-    fun addChat(chatItem: ChatItem) {
-        this.chatList.add(0, chatItem)
-        this.notifyItemInserted(0)
-    }
-
     inner class MyViewHolder(private val binding: ChatItemBinding) : RecyclerView.ViewHolder(binding.root) {
         private val username = sharedManager.getUsername()
         private val userid = sharedManager.getUserId()
 
         fun bind(chatItem: ChatItem) {
-            val context = binding.root.context
-
             // 챗의 종류에 따라 보이는 요소 바꾸기
             when (chatItem.chatType) {
                 "chat" -> {

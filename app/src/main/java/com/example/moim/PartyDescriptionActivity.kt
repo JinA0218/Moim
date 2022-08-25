@@ -142,7 +142,8 @@ class PartyDescriptionActivity: AppCompatActivity() {
                 sharedManager.getUserId(),
                 sharedManager.getUsername(),
                 partyInformation.common.partyId,
-                like
+                if (like) 1 else 0,
+                partyTypeString(partyTypeNumber).replace("-", "_")
             )
 
             retrofitHandler.likeParty(likeInfo).enqueue(
