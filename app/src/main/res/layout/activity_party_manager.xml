@@ -367,6 +367,7 @@
 
         >
 
+<!--        TODO: HEAD가 아닌 다른 유저가 사용할 때 보여질 레이아웃 작성하기-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

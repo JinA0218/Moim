@@ -114,7 +114,8 @@ class PartyChatActivity: AppCompatActivity(), CoroutineScope {
                         val intent = Intent(this, PartyManagerActivity::class.java)
                     }
                     R.id.action_menu_leave -> {
-                        // TODO: 경고 팝업 보이게 하기
+                        // TODO: '정말로 나가시겠습니까?' 경고 팝업 보이게 하기
+                        //      + 기능 구현 (서버와 통신하는 등)
                     }
                     else -> throw Error("Impossible case!!")
                 }

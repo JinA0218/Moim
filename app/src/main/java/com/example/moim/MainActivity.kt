@@ -24,8 +24,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // TODO: 로그인 되어있는지 체크하자.
-        //      로그인이 되어있지 않다면 LoginActivity 로 넘겨준다.
+        // TODO: 자동 로그인 기능?
 
         sharedManager = SharedManager(this)
 

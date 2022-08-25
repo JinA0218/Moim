@@ -17,7 +17,6 @@
             android:layout_height="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="몰라"
             android:textSize="16sp"
             android:textColor="@color/black"
             android:padding="5dp"
@@ -34,7 +33,6 @@
             app:layout_constraintEnd_toStartOf="@id/my_text_chat_content"
             app:layout_constraintBottom_toBottomOf="@id/my_text_chat_content"
             android:layout_marginEnd="5dp"
-            android:text="time"
             android:textSize="12sp"
             android:textColor="@color/black"
             />
@@ -58,7 +56,6 @@
             android:padding="5dp"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
-            android:text="밥 뭐먹지"
             android:gravity="center_vertical"
             android:background="@drawable/chat_item_background"
             />
@@ -71,7 +68,6 @@
             app:layout_constraintBottom_toTopOf="@id/others_text_chat_content"
             android:layout_marginBottom="5dp"
             android:textSize="12sp"
-            android:text="glacya"
             android:textColor="@color/black"
             />
 
@@ -81,7 +77,6 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="12sp"
-            android:text="time"
             app:layout_constraintStart_toEndOf="@id/others_text_chat_content"
             app:layout_constraintBottom_toBottomOf="@id/others_text_chat_content"
             android:layout_marginStart="5dp"
