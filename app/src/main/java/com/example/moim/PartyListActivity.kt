@@ -41,15 +41,8 @@ class PartyListActivity: AppCompatActivity(), CoroutineScope {
 
         binding.textPartyListTitle.text = partyType
 
-        val partyList = getPartyList(partyTypeNumber)
-
         partyAdapter = PartyAdapter(partyTypeNumber)
 
-//        val partyDescriptionLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-//
-//        }
-
-        partyAdapter.partyList = partyList
         partyAdapter.setItemClickListener(
             object: PartyAdapter.OnItemClickListener{
                 override fun onClick(v: View, position: Int) {
@@ -121,7 +114,6 @@ class PartyAdapter(private val partyNumber: Int): RecyclerView.Adapter<PartyAdap
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.itemView.setOnClickListener {
-//            Toast.makeText(binding.root.context, "aaaa", Toast.LENGTH_SHORT).show()
             itemClickListener.onClick(it, position)
         }
         holder.bind(partyList[position])
@@ -140,19 +132,18 @@ class PartyAdapter(private val partyNumber: Int): RecyclerView.Adapter<PartyAdap
             val context = binding.root.context
 
             when (partyNumber) {
-                0 -> {  // 택시팟
+                PartyTypeNumber.Taxi -> {  // 택시팟
                     val taxiParty = party as TaxiParty
 
-                    // TODO: 날짜 스트링, 시간 스트링 다듬기
-                    val dateString = taxiParty.extra.partyDate
-                    val timeString = taxiParty.extra.partyTime
+                    val dateString = parseDateString(taxiParty.extra.partyDate)
+                    val timeString = parseTimeString(taxiParty.extra.partyTime)
 
                     binding.root.removeView(binding.upperSimple)
                     binding.partyOption1.text = String.format(context.getString(R.string.taxi_option1), taxiParty.extra.detailedStartPlace)
                     binding.partyOption2.text = String.format(context.getString(R.string.taxi_option2), taxiParty.extra.destination)
                     binding.partyLowerOption.text = String.format(context.getString(R.string.party_datetime), dateString, timeString)
                 }
-                1, 2 -> {  // 밥약 + 야식팟
+                PartyTypeNumber.Meal, PartyTypeNumber.NightMeal -> {  // 밥약 + 야식팟
                     val mealParty = party as MealParty
                     val outside = if (mealParty.extra.outside == 1) {
                         "나가서 먹기"
@@ -160,21 +151,20 @@ class PartyAdapter(private val partyNumber: Int): RecyclerView.Adapter<PartyAdap
                         "배달 시키기"
                     }
 
-                    // TODO: 날짜 스트링, 시간 스트링 다듬기
-                    val dateString = mealParty.extra.partyDate
-                    val timeString = mealParty.extra.partyTime
+                    val dateString = parseDateString(mealParty.extra.partyDate)
+                    val timeString = parseTimeString(mealParty.extra.partyTime)
 
                     binding.root.removeView(binding.upperSimple)
                     binding.partyOption1.text = String.format(context.getString(R.string.meal_option1), mealParty.extra.mealType)
                     binding.partyOption2.text = String.format(context.getString(R.string.meal_option2), outside)
                     binding.partyLowerOption.text = String.format(context.getString(R.string.party_datetime), dateString, timeString)
                 }
-                3 -> {  // 공부/프로젝트팟
+                PartyTypeNumber.Study -> {  // 공부/프로젝트팟
                     val studyParty = party as StudyParty
 
                     binding.partyLowerOption.text = studyParty.common.place.toWrittenString()
                 }
-                4 -> {  // 나만의팟
+                PartyTypeNumber.Custom -> {  // 나만의팟
                     val customParty = party as CustomParty
 
                     binding.partyLowerOption.text = customParty.common.place.toWrittenString()
@@ -189,12 +179,6 @@ class PartyAdapter(private val partyNumber: Int): RecyclerView.Adapter<PartyAdap
                 party.common.currentCount,
                 party.common.maximumCount
             )
-//            binding.partyTypeItem.text = name
-//            binding.partyTypeItem.setOnClickListener {
-//                val intent = Intent(context, PartyListActivity::class.java)
-//                intent.putExtra("party_type", name)
-//                context.startActivity(intent)
-//            }
         }
     }
 }

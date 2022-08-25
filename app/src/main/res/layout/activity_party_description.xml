@@ -45,15 +45,28 @@
         />
 
     <android.widget.Button
-        android:id="@+id/img_button_like"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/like"
+        android:id="@+id/button_refresh"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="@id/text_party_name"
+        app:layout_constraintBottom_toBottomOf="@id/text_party_name"
+        app:layout_constraintEnd_toStartOf="@id/button_like"
+        app:layout_constraintDimensionRatio="2:1"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/text_box"
+        android:text="@string/string_refresh"
+        />
+
+    <android.widget.Button
+        android:id="@+id/button_like"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/like_white"
         app:layout_constraintTop_toTopOf="@id/text_party_name"
         app:layout_constraintBottom_toBottomOf="@id/text_party_name"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
         android:layout_marginEnd="30dp"
-        android:text="@string/hi"
         />
 
     <TextView
@@ -91,29 +104,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"
-        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintWidth_percent="0.8"
+        android:orientation="vertical"
         >
 
         <TextView
             android:id="@+id/text_party_option1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textColor="@color/black"
             android:text="@string/placeholder"
             android:layout_weight="1"
-            android:gravity="center"
+            android:gravity="start"
             />
 
         <TextView
             android:id="@+id/text_party_option2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textColor="@color/black"
             android:text="@string/placeholder"
             android:layout_weight="1"
-            android:gravity="center"
+            android:gravity="start"
             />
 
     </LinearLayout>
@@ -122,15 +136,21 @@
 
     <TextView
         android:id="@+id/text_party_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="@string/placeholder"
         android:textColor="@color/black"
         android:textSize="16sp"
+        android:padding="5dp"
         app:layout_constraintTop_toBottomOf="@id/text_party_head"
         app:layout_constraintBottom_toTopOf="@id/button_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintVertical_bias="0.9"
+        app:layout_constraintHeight_percent="0.3"
+        android:gravity="start"
+        android:background="@drawable/text_box"
         />
 
     <android.widget.Button

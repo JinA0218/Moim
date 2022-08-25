@@ -51,16 +51,54 @@ interface RetrofitHandler {
         @Query("type") partyType: String,
     ): Call<Party>
 
-    @POST("/join-party/{party_type}")
-    fun joinParty(
-        @Path("party_type") partyType: String,
+    @POST("/join-party/taxi-party")
+    fun joinTaxiParty(
         @Body joinBody: PartyJoinInformation
     ): Call<Unit>
 
-    @POST("/create-party/{party_type}")
-    fun createParty(
-        @Path("party_type") partyType: String,
-        @Body partyBody: Party,
+    @POST("/join-party/meal-party")
+    fun joinMealParty(
+        @Body joinBody: PartyJoinInformation
+    ): Call<Unit>
+
+    @POST("/join-party/night-meal-party")
+    fun joinNightMealParty(
+        @Body joinBody: PartyJoinInformation
+    ): Call<Unit>
+
+    @POST("/join-party/study-party")
+    fun joinStudyParty(
+        @Body joinBody: PartyJoinInformation
+    ): Call<Unit>
+
+    @POST("/join-party/custom-party")
+    fun joinCustomParty(
+        @Body joinBody: PartyJoinInformation
+    ): Call<Unit>
+
+    @POST("/create-party/taxi-party")
+    fun createTaxiParty(
+        @Body partyBody: TaxiParty,
+    ): Call<ResponseCreateParty>
+
+    @POST("/create-party/meal-party")
+    fun createMealParty(
+        @Body partyBody: MealParty,
+    ): Call<ResponseCreateParty>
+
+    @POST("/create-party/night-meal-party")
+    fun createNightMealParty(
+        @Body partyBody: MealParty,
+    ): Call<ResponseCreateParty>
+
+    @POST("/create-party/study-party")
+    fun createStudyParty(
+        @Body partyBody: StudyParty,
+    ): Call<ResponseCreateParty>
+
+    @POST("/create-party/custom-party")
+    fun createCustomParty(
+        @Body partyBody: CustomParty,
     ): Call<ResponseCreateParty>
 
     @POST("/modify-party")
@@ -68,11 +106,29 @@ interface RetrofitHandler {
         @Body partyBody: Party,
     ): Call<ResponseModifyParty>
 
-    @GET("/liked-party")
-    fun getLikedPartyList(): Call<MutableList<Party>>
-
-    @GET("party-user-list/{party_id}")
+    @GET("/party-user-list/{party_id}")
     fun getPartyUserList(
         @Path("party_id") partyId: Int,
     ): Call<MutableList<UserInformation>>
+
+    @GET("/party-chat-list")
+    fun getPartyChatList(
+        @Query("party_id") partyId: Int,
+        @Query("offset") offset: Int,
+    ): Call<MutableList<ChatItem>>
+
+    @GET("/my-party/{userid}")
+    fun getMyPartyList(
+        @Path("userid") userId: String,
+    ): Call<ResponseMixedParty>
+
+    @GET("/liked-party/{userid}")
+    fun getLikedPartyList(
+        @Path("userid") userId: String,
+    ): Call<ResponseMixedParty>
+
+    @POST("/like")
+    fun likeParty(
+        @Body likeBody: LikeInformation
+    ): Call<Unit>
 }

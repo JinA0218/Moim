@@ -13,6 +13,11 @@
     <string name="string_time">시간</string>
     <string name="string_hour">시</string>
     <string name="string_minute">분</string>
+    <string name="string_send">전송</string>
+    <string name="string_simple_date">%1$d월 %2$d일</string>
+    <string name="string_refresh">새로고침</string>
+    <string name="string_join">참가하기</string>
+    <string name="string_enter">들어가기</string>
 
     <string name="check_duplicate">중복확인</string>
     <string name="main_welcome">%1$s님 하이!</string>
@@ -34,6 +39,8 @@
     <string name="create_party_name_hint">팟을 잘 표현할 수 있는 제목을 적어주세요.</string>
     <string name="create_party_maximum_count">최대 인원 수:</string>
 
+    <string name="menu_info">파티 정보</string>
+    <string name="menu_leave">파티 탈퇴하기</string>
 
     <string name="placeholder">PlaceHolder</string>
     <string name="hi">HI</string>
