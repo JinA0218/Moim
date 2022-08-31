@@ -120,7 +120,7 @@ class PartyChatActivity: AppCompatActivity(), CoroutineScope {
                     else -> throw Error("Impossible case!!")
                 }
 
-                false
+                true
             }
         }
     }

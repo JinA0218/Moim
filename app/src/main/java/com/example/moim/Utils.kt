@@ -13,7 +13,7 @@ import java.util.*
 import kotlin.Exception
 
 // TODO: IP 주소 계속 바꿔주기
-const val ipAddress = "143.248.195.165"
+const val ipAddress = "localhost"
 
 object PartyTypeNumber {
     const val Taxi = 0
