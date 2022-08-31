@@ -1,0 +1,44 @@
+<html>
+<head>
+</head>
+<body>
+    <!-- <script>
+        var http = new XMLHttpRequest();
+        var url = 'http://localhost:80/';
+        http.open('POST', url, true);
+
+        //Send the proper header information along with the request
+        http.setRequestHeader('Content-type', 'application/json');
+
+        http.onreadystatechange = function() {//Call a function when the state changes.
+            if(http.readyState == 4 && http.status == 200) {
+                let buffer = new ArrayBuffer(http.response.length);
+                let chars = new Uint8Array(buffer);
+                for (let i = 0; i < http.response.length; i++) {
+                    chars[i] = http.response.charCodeAt(i);
+                }
+                const blob = new Blob([chars], {type: 'audio/wav'})
+                const url = window.URL.createObjectURL(blob)
+                const a = document.createElement("a")
+                a.href = url
+                a.download = `playtest.wav`
+                a.click()
+                a.remove()
+                window.URL.revokeObjectURL(url);
+            }
+        }
+        http.send(JSON.stringify({
+            tempo: 120,
+            total_length: 1,
+            number_of_notes: 2,
+            rhythm: '4/4',
+            notes: [
+                { id: 0, start: 0, length: 1, pitch: 5, note_type: 'sine'},
+                { id: 1, start: 0, length: 1, pitch: 12, note_type: 'synth1'}
+            ]
+        }))
+     </script> -->
+    <h1>ㅋㅋㅋㅋ</h1>
+</body>
+
+</html>
