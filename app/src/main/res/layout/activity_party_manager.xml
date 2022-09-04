@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_edit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            >
+
+            <EditText
+                android:id="@+id/edittext_party_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="22sp"
+                android:textColor="@color/black"
+                android:background="@drawable/text_box"
+                android:hint="@string/hint_party_name"
+                app:layout_constraintWidth_percent="0.55"
+                android:inputType="text"
+                />
+
+            <TextView
+                android:id="@+id/text_party_name_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/edittext_party_name"
+                app:layout_constraintStart_toStartOf="@id/edittext_party_name"
+                android:text="@string/create_party_name_hint"
+                android:textSize="11sp"
+                android:textColor="@color/gray"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/edittext_party_name"
+                app:layout_constraintTop_toTopOf="@id/edittext_party_name"
+                app:layout_constraintEnd_toStartOf="@id/edittext_party_maximum_count"
+                android:text="@string/create_party_maximum_count"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:layout_marginEnd="6dp"
+                />
+
+
+            <EditText
+                android:id="@+id/edittext_party_maximum_count"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:textSize="16sp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="2"
+                app:layout_constraintBottom_toBottomOf="@id/edittext_party_name"
+                app:layout_constraintTop_toTopOf="@id/edittext_party_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/text_box"
+                />
+
+            <TextView
+                android:id="@+id/text_party_time_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/string_time"
+                android:textColor="@color/black"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/text_party_name_hint"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="30dp"
+                />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintWidth_percent="0.7"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/text_party_time_hint"
+                app:layout_constraintBottom_toBottomOf="@id/text_party_time_hint"
+                android:layout_marginEnd="30dp"
+                >
+
+                <android.widget.Button
+                    android:id="@+id/button_party_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hint_datetime"
+                    android:background="@drawable/text_box"
+                    app:layout_constraintWidth_percent="0.25"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+                <Spinner
+                    android:id="@+id/spinner_time_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/edittext_party_time_hour"
+                    android:layout_marginEnd="5dp"
+                    />
+
+                <EditText
+                    android:id="@+id/edittext_party_time_hour"
+                    android:layout_width="30dp"
+                    android:layout_height="28dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:padding="5dp"
+                    android:background="@drawable/text_box"
+                    android:inputType="number"
+                    app:layout_constraintEnd_toStartOf="@id/text_party_time_hour"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginEnd="5dp"
+                    />
+
+                <TextView
+                    android:id="@+id/text_party_time_hour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/edittext_party_time_minute"
+                    android:layout_marginEnd="5dp"
+                    android:text="@string/string_hour"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    />
+
+
+                <EditText
+                    android:id="@+id/edittext_party_time_minute"
+                    android:layout_width="30dp"
+                    android:layout_height="28dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:padding="5dp"
+                    android:background="@drawable/text_box"
+                    android:inputType="number"
+                    app:layout_constraintEnd_toStartOf="@id/text_party_time_minute"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginEnd="5dp"
+                    />
+
+                <TextView
+                    android:id="@+id/text_party_time_minute"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="@string/string_minute"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/text_party_place_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/string_place"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_party_time_hint"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="30dp"
+                />
+
+            <LinearLayout
+                android:id="@+id/linear_place"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintWidth_percent="0.7"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/text_party_place_hint"
+                app:layout_constraintBottom_toBottomOf="@id/text_party_place_hint"
+                android:layout_marginEnd="30dp"
+                >
+
+                <Spinner
+                    android:id="@+id/spinner_place1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:layout_gravity="center"
+                    />
+
+                <Spinner
+                    android:id="@+id/spinner_place2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:layout_gravity="center"
+                    />
+
+                <Spinner
+                    android:id="@+id/spinner_place3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:layout_gravity="center"
+                    />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/text_party_option1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:text="@string/hi"
+                app:layout_constraintStart_toStartOf="@id/text_party_time_hint"
+                app:layout_constraintTop_toBottomOf="@id/text_party_place_hint"
+                android:layout_marginTop="20dp"
+                />
+
+            <EditText
+                android:id="@+id/edittext_taxi_start"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/text_party_option1"
+                app:layout_constraintBottom_toBottomOf="@id/text_party_option1"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintWidth_percent="0.6"
+                android:background="@drawable/text_box"
+                android:padding="5dp"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:gravity="end"
+                android:inputType="text"
+                />
+
+            <Spinner
+                android:id="@+id/spinner_meal_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/text_party_option1"
+                app:layout_constraintBottom_toBottomOf="@id/text_party_option1"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintWidth_percent="0.4"
+                />
+
+            <TextView
+                android:id="@+id/text_party_option2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:text="@string/hi"
+                app:layout_constraintStart_toStartOf="@id/text_party_time_hint"
+                app:layout_constraintTop_toBottomOf="@id/text_party_option1"
+                android:layout_marginTop="20dp"
+                />
+
+            <EditText
+                android:id="@+id/edittext_taxi_destination"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/text_party_option2"
+                app:layout_constraintBottom_toBottomOf="@id/text_party_option2"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintWidth_percent="0.6"
+                android:background="@drawable/text_box"
+                android:padding="5dp"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:gravity="end"
+                android:inputType="text"
+                />
+
+            <Spinner
+                android:id="@+id/spinner_meal_outside"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/text_party_option2"
+                app:layout_constraintBottom_toBottomOf="@id/text_party_option2"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintWidth_percent="0.4"
+                />
+
+            <EditText
+                android:id="@+id/edittext_party_description"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/button_edit_back"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintWidth_percent="0.8"
+                app:layout_constraintHeight_percent="0.45"
+                android:hint="@string/hint_party_detail"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:gravity="top"
+                android:background="@drawable/text_box"
+                android:padding="5dp"
+                android:scrollbars="vertical"
+                />
+
+            <android.widget.Button
+                android:id="@+id/button_edit_back"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                app:layout_constraintWidth_percent="0.3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.2"
+                app:layout_constraintBottom_toBottomOf="@id/constraint_edit"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:text="@string/modify_cancel"
+                />
+
+            <android.widget.Button
+                android:id="@+id/button_confirm_modify"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                app:layout_constraintWidth_percent="0.3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:text="@string/modify_confirm"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            >
+
+            <TextView
+                android:id="@+id/text_party_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="40dp"
+                android:layout_marginStart="20dp"
+                android:textSize="28sp"
+                android:textColor="@color/black"
+                android:text="@string/placeholder"
+                />
+
+            <TextView
+                android:id="@+id/text_party_head"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_party_name"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="30dp"
+
+                android:text="@string/placeholder"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                />
+
+            <TextView
+                android:id="@+id/text_party_count"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_party_head"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="30dp"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:text="@string/placeholder"
+                />
+
+            <android.widget.Button
+                android:id="@+id/button_user_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintTop_toTopOf="@id/text_party_name"
+                app:layout_constraintBottom_toBottomOf="@id/text_party_name"
+                />
+
+            <TextView
+                android:id="@+id/text_party_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.3"
+
+                android:textSize="20sp"
+                android:text="@string/placeholder"
+                android:textColor="@color/black"
+                />
+
+            <TextView
+                android:id="@+id/text_party_place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/text_party_time"
+                app:layout_constraintStart_toStartOf="@id/text_party_time"
+                android:layout_marginTop="10dp"
+                android:textSize="20sp"
+                android:text="@string/placeholder"
+                android:textColor="@color/black"
+                />
+
+            <LinearLayout
+                android:id="@+id/linear_options"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/text_party_place"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="20dp"
+                app:layout_constraintWidth_percent="0.8"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/text_view_party_option1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:text="@string/placeholder"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    />
+
+                <TextView
+                    android:id="@+id/text_view_party_option2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:text="@string/placeholder"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    />
+
+            </LinearLayout>
+
+
+
+            <TextView
+                android:id="@+id/text_party_description"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="@string/placeholder"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:padding="5dp"
+                app:layout_constraintTop_toBottomOf="@id/text_party_head"
+                app:layout_constraintBottom_toTopOf="@id/button_view_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_percent="0.8"
+                app:layout_constraintVertical_bias="0.9"
+                app:layout_constraintHeight_percent="0.3"
+                android:gravity="start"
+                android:background="@drawable/text_box"
+                />
+
+            <android.widget.Button
+                android:id="@+id/button_view_back"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                app:layout_constraintWidth_percent="0.3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:text="@string/string_back"
+                />
+
+            <android.widget.Button
+                android:id="@+id/button_enter_party"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                app:layout_constraintWidth_percent="0.3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:text="@string/placeholder"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
+
+
