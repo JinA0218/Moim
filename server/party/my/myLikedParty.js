@@ -6,7 +6,7 @@ const Like=function(req, res){
     const username=req.body.username;
     const party_id=req.body.party_id;
     const liked=req.body.liked;
-    const type=req.body.type;
+    const type=req.body.party_type;
 
     debug(`POST /like\tUSREID : ${userid}, USERNAME : ${username}, PARTY ID : ${party_id}, LIKED : ${liked} TYPE : ${type}`);
 

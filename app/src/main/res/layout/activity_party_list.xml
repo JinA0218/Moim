@@ -29,10 +29,13 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
-    <android.widget.Button
+    <android.widget.ImageButton
         android:id="@+id/button_create_party"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/add"
+        android:scaleType="centerInside"
+        android:background="@color/white"
         android:text="@string/create_party"
         android:textSize="20sp"
         android:textColor="@color/black"

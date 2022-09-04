@@ -59,9 +59,9 @@
 
     <android.widget.Button
         android:id="@+id/button_like"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/like_white"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:background="@drawable/heart"
         app:layout_constraintTop_toTopOf="@id/text_party_name"
         app:layout_constraintBottom_toBottomOf="@id/text_party_name"
         app:layout_constraintEnd_toEndOf="parent"

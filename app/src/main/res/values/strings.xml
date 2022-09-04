@@ -20,7 +20,7 @@
     <string name="string_enter">들어가기</string>
 
     <string name="check_duplicate">중복확인</string>
-    <string name="main_welcome">%1$s님 하이!</string>
+    <string name="main_welcome">%1$s님 안녕하세요!</string>
     <string name="register_username">닉네임</string>
     <string name="create_party">팟 만들기</string>
     <string name="taxi_option1">출발지: %1$s</string>
