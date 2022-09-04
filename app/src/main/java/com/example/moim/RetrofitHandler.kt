@@ -131,4 +131,9 @@ interface RetrofitHandler {
     fun likeParty(
         @Body likeBody: LikeInformation
     ): Call<Unit>
+
+    @POST("/leave-party")
+    fun leaveParty(
+        @Body LeaveBody: LeaveInformation
+    ): Call<Unit>
 }

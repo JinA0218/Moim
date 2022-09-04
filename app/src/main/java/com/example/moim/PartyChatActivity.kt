@@ -1,5 +1,6 @@
 package com.example.moim
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +20,9 @@ import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import kotlinx.coroutines.*
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.net.URISyntaxException
 import kotlin.coroutines.CoroutineContext
 
@@ -105,8 +110,6 @@ class PartyChatActivity: AppCompatActivity(), CoroutineScope {
         }
 
         binding.buttonMenu.setOnClickListener {
-            // TODO: 이거 왜 작동 안함???????
-            Toast.makeText(this, "Hmmm", Toast.LENGTH_SHORT).show()
             val popupMenu = PopupMenu(this, it)
             menuInflater.inflate(R.menu.popup, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener { menuItem ->
@@ -120,12 +123,50 @@ class PartyChatActivity: AppCompatActivity(), CoroutineScope {
                     R.id.action_menu_leave -> {
                         // TODO: '정말로 나가시겠습니까?' 경고 팝업 보이게 하기
                         //      + 기능 구현 (서버와 통신하는 등)
+                        val builder = AlertDialog.Builder(this)
+                        builder.setTitle("파티 탈퇴").setMessage("정말로 탈퇴 하실건가요?")
+
+                        builder.setPositiveButton("탈퇴하기") { _, _ ->
+                            val leaveBody = LeaveInformation(
+                                userid = sharedManager.getUserId(),
+                                username = sharedManager.getUsername(),
+                                partyId = partyInformation.common.partyId,
+                                partyType = partyTypeString(partyTypeNumber)
+                            )
+                            retrofitHandler.leaveParty(leaveBody).enqueue(
+                                object: Callback<Unit> {
+                                    override fun onResponse(
+                                        call: Call<Unit>,
+                                        response: Response<Unit>
+                                    ) {
+                                        if (response.isSuccessful) {
+                                            Toast.makeText(applicationContext, "파티에서 탈퇴했습니다.", Toast.LENGTH_SHORT).show()
+                                            if (!isFinishing) finish()
+                                        }
+                                        else {
+                                            Toast.makeText(applicationContext, "파티에서 탈퇴하지 못했습니다.", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+
+                                    override fun onFailure(call: Call<Unit>, t: Throwable) {
+                                        Toast.makeText(applicationContext, "서버와 통신에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            )
+                        }
+
+                        builder.setNegativeButton("취소") { _, _ ->
+                            Toast.makeText(this, "취소함 아무튼", Toast.LENGTH_SHORT).show()
+                        }
+
+                        builder.create().show()
                     }
                     else -> throw Error("Impossible case!!")
                 }
 
                 true
             }
+            popupMenu.show()
         }
     }
 

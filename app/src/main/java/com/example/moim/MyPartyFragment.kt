@@ -12,6 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moim.databinding.FragmentLikedTabBinding
 import com.example.moim.databinding.FragmentMyPartyBinding
 import com.example.moim.databinding.PartyItemBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -44,29 +47,23 @@ class MyPartyFragment: Fragment() {
             }
         )
 
-        retrofitHandler.getLikedPartyList(sharedManager.getUserId()).enqueue(
-            object: Callback<ResponseMixedParty> {
-                override fun onResponse(
-                    call: Call<ResponseMixedParty>,
-                    response: Response<ResponseMixedParty>
-                ) {
-                    val mixedParties = response.body()?:
-                    ResponseMixedParty(mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf())
-
-                    val partyList = mixedToList(mixedParties)
-
-                    myPartyAdapter.partyList = partyList
-                    binding.recyclerMyParty.adapter = myPartyAdapter
-                    binding.recyclerMyParty.layoutManager =
-                        LinearLayoutManager(binding.root.context, LinearLayoutManager.VERTICAL, false)
-
+        val partyList = runBlocking {
+            withContext(Dispatchers.IO) {
+                val response = retrofitHandler.getMyPartyList(sharedManager.getUserId()).execute().body()
+                if (response != null) {
+                    mixedToList(response)
                 }
-
-                override fun onFailure(call: Call<ResponseMixedParty>, t: Throwable) {
-                    Log.d("LIKED", t.toString())
+                else {
+                    mutableListOf()
                 }
             }
-        )
+        }
+
+        myPartyAdapter.partyList = partyList
+
+        binding.recyclerMyParty.adapter = myPartyAdapter
+        binding.recyclerMyParty.layoutManager =
+            LinearLayoutManager(binding.root.context, LinearLayoutManager.VERTICAL, false)
 
         return binding.root
     }

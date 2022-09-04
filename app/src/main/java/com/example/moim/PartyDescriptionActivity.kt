@@ -126,10 +126,12 @@ class PartyDescriptionActivity: AppCompatActivity() {
                     val dao = roomDB.LDao()
                     if (dao.getId(id) == null) {
                         dao.insert(LikedParty(id))
+                        Log.d("LIKE", "inserted new liked party")
                         true
                     }
                     else {
                         dao.delete(LikedParty(id))
+                        Log.d("LIKE", "removed from liked party")
                         false
                     }
                 }
@@ -150,6 +152,7 @@ class PartyDescriptionActivity: AppCompatActivity() {
                 object: Callback<Unit> {
                     override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                         // Do nothing
+                        Log.d("LIKED", "OK")
                     }
 
                     override fun onFailure(call: Call<Unit>, t: Throwable) {

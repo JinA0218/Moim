@@ -13,7 +13,7 @@ import java.util.*
 import kotlin.Exception
 
 // TODO: IP 주소 계속 바꿔주기
-const val ipAddress = "localhost"
+const val ipAddress = "10.0.2.2"
 
 object PartyTypeNumber {
     const val Taxi = 0
@@ -317,6 +317,15 @@ data class LikeInformation(
     @SerializedName("party_type")
     val partyType: String,
 ): Serializable
+
+data class LeaveInformation(
+    val userid: String,
+    val username: String,
+    @SerializedName("party_type")
+    val partyType: String,
+    @SerializedName("party_id")
+    val partyId: Int,
+)
 
 // Retrofit2 API 와 연결해서 사용할 것
 data class ResponseLogin(
