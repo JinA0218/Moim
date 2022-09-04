@@ -169,6 +169,7 @@ class PartyDescriptionActivity: AppCompatActivity() {
 
             val intent = Intent(this, PartyChatActivity::class.java)
             intent.putExtra("party_info", partyInformation)
+            intent.putExtra("party_type_number", partyTypeNumber)
 
             if (binding.buttonEnterParty.text.toString() == getString(R.string.string_join)) {
                 // 새로 파티에 참가하는 경우, joinParty를 한다.

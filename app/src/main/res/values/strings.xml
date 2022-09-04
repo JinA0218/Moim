@@ -33,6 +33,10 @@
     <string name="party_count">%1$d / %2$d</string>
     <string name="party_head">방장: %1$s</string>
 
+    <string name="modify_party">팟 수정하기</string>
+    <string name="modify_cancel">수정 취소</string>
+    <string name="modify_confirm">수정 완료</string>
+
     <string name="chat_join">%1$s 님이 입장했습니다.</string>
     <string name="chat_leave">%1$s 님이 나갔습니다.</string>
 

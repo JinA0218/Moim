@@ -42,6 +42,7 @@ class PartyChatActivity: AppCompatActivity(), CoroutineScope {
         setContentView(binding.root)
 
         val partyInformation: Party = intent.extras?.getSerializable("party_info")!! as Party
+        val partyTypeNumber = intent.extras?.getInt("party_type_number")!!
 
         partyId = partyInformation.common.partyId
 
@@ -105,13 +106,16 @@ class PartyChatActivity: AppCompatActivity(), CoroutineScope {
 
         binding.buttonMenu.setOnClickListener {
             // TODO: 이거 왜 작동 안함???????
+            Toast.makeText(this, "Hmmm", Toast.LENGTH_SHORT).show()
             val popupMenu = PopupMenu(this, it)
             menuInflater.inflate(R.menu.popup, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.action_menu_info -> {
-                        // TODO: PartyManagerActivity 로 넘겨주기
                         val intent = Intent(this, PartyManagerActivity::class.java)
+                        intent.putExtra("party_info", partyInformation)
+                        intent.putExtra("party_type_number", partyTypeNumber)
+                        startActivity(intent)
                     }
                     R.id.action_menu_leave -> {
                         // TODO: '정말로 나가시겠습니까?' 경고 팝업 보이게 하기
@@ -197,7 +201,7 @@ class ChatAdapter: RecyclerView.Adapter<ChatAdapter.MyViewHolder>(){
 //                        "${chatItem.username} 님이 나갔습니다."
                 }
                 "new_date" -> {
-                    Unit
+
                 }
                 // 이 외의 경우에는 아무것도 하지 않는다.
                 else -> Unit
