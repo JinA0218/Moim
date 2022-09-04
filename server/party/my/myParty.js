@@ -1,5 +1,5 @@
-import debug from '../debug.js';
-import {connection} from '../config/connection.js';
+import debug from '../../debug.js';
+import {connection, convertRowsHierarchical} from '../../config/connection.js';
 
 const myParty=function (req, res){
     const userid=req.params.userid;
@@ -48,7 +48,7 @@ const myParty=function (req, res){
                         else{
                             debug(`!!!!!!!!!!!!`);
                             debug(`${type_arr[i]} Rows : ${JSON.stringify(rows)}`);
-                            party_json[type_arr[i]]=rows;
+                            party_json[type_arr[i]]=convertRowsHierarchical(rows,type_arr[i]);
                         }
                         if(i==4){
                             res.status(200).send(party_json);
