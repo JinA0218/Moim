@@ -25,10 +25,17 @@
         <entry key="..\:/Projects/Moim2/app/src/main/res/layout/party_type_item.xml" value="0.20923913043478262" />
         <entry key="..\:/Projects/Moim2/app/src/main/res/menu/menu_main.xml" value="0.17314814814814813" />
         <entry key="..\:/Projects/Moim2/app/src/main/res/menu/popup.xml" value="0.35052083333333334" />
+        <entry key="..\:/Users/jina/AndroidStudioProjects/moim/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.135" />
+        <entry key="..\:/Users/jina/AndroidStudioProjects/moim/app/src/main/res/drawable/chat_item_background.xml" value="0.135" />
+        <entry key="..\:/Users/jina/AndroidStudioProjects/moim/app/src/main/res/drawable/ic_launcher_background.xml" value="0.135" />
+        <entry key="..\:/Users/jina/AndroidStudioProjects/moim/app/src/main/res/drawable/party_item_background.xml" value="0.135" />
         <entry key="..\:/Users/jina/AndroidStudioProjects/moim/app/src/main/res/layout/activity_create_party.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jina/AndroidStudioProjects/moim/app/src/main/res/layout/activity_login.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jina/AndroidStudioProjects/moim/app/src/main/res/layout/activity_main.xml" value="0.12107396149949341" />
         <entry key="..\:/Users/jina/AndroidStudioProjects/moim/app/src/main/res/layout/activity_party_chat.xml" value="0.24895833333333334" />
+        <entry key="..\:/Users/jina/AndroidStudioProjects/moim/app/src/main/res/layout/activity_party_description.xml" value="0.24895833333333334" />
+        <entry key="..\:/Users/jina/AndroidStudioProjects/moim/app/src/main/res/layout/activity_party_list.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/jina/AndroidStudioProjects/moim/app/src/main/res/layout/activity_party_manager.xml" value="0.22418478260869565" />
       </map>
     </option>
   </component>

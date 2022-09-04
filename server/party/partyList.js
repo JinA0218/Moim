@@ -235,7 +235,7 @@ const joinParty=function (req, res){
 
 //leave-party
 const leaveParty=function (req, res){
-    const input_type=req.params.type;
+    const input_type=req.body.party_type;
     const type=input_type.replace('-','_');
     const party_id=req.body.party_id;
     const userid=req.body.userid;

@@ -307,7 +307,7 @@ app.get("/party-list/:type", getPartyList);
 app.post("/join-party/:type",joinParty);
 
 //delete (party_id, userid) in party_user
-app.post("/leave-party/:type",leaveParty);
+app.post("/leave-party",leaveParty);
 
 //create new taxi-party (insert into taxi_party table)
 app.post("/create-party/taxi-party", createTaxiParty);
