@@ -138,7 +138,7 @@ class PartyDescriptionActivity: AppCompatActivity() {
             }
 
             binding.buttonLike.background =
-                AppCompatResources.getDrawable(this, if (like) R.drawable.like_full else R.drawable.like_white)
+                AppCompatResources.getDrawable(this, if (like) R.drawable.redheart else R.drawable.heart)
 
             val likeInfo = LikeInformation(
                 sharedManager.getUserId(),

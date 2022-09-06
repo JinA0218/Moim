@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/constraint_chat_item"
     android:layout_width="match_parent"
-    android:layout_height="100dp">
+    android:layout_height="100dp"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_my_chat"
@@ -15,15 +16,17 @@
             android:id="@+id/my_text_chat_content"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
+            android:text="dsfsfdsdfsd"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:textSize="16sp"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:padding="5dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:gravity="center_vertical"
-            android:background="@drawable/chat_item_background"
+            android:background="@drawable/chat_item_background1"
             />
 
         <TextView
@@ -49,6 +52,7 @@
             android:id="@+id/others_text_chat_content"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
+            android:text="dsfsfdsdfsd"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:textColor="@color/black"
@@ -57,7 +61,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
             android:gravity="center_vertical"
-            android:background="@drawable/chat_item_background"
+            android:background="@drawable/chat_item_background2"
             />
 
         <TextView
