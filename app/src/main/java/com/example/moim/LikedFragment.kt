@@ -47,20 +47,6 @@ class LikedFragment: Fragment() {
             }
         )
 
-        val partyList = runBlocking {
-            withContext(Dispatchers.IO) {
-                val response = retrofitHandler.getLikedPartyList(sharedManager.getUserId()).execute().body()
-                if (response != null) {
-                    mixedToList(response)
-                }
-                else {
-                    mutableListOf()
-                }
-            }
-        }
-
-        likedAdapter.partyList = partyList
-
         binding.recyclerLikedParty.adapter = likedAdapter
         binding.recyclerLikedParty.layoutManager =
             LinearLayoutManager(binding.root.context, LinearLayoutManager.VERTICAL, false)
@@ -71,7 +57,24 @@ class LikedFragment: Fragment() {
     override fun onResume() {
         super.onResume()
 
-        Toast.makeText(binding.root.context, "hi", Toast.LENGTH_SHORT).show()
+        // TODO: onResume() 에 코드를 작성하니 렉이 너무 심하다.
+        //      새로고침 할 수 있는 코드를 작성하는 것이 렉을 줄일 때 좋을 것이다.
+        likedAdapter.partyList = updatePartyList()
+        likedAdapter.notifyDataSetChanged()
+    }
+
+    private fun updatePartyList(): MutableList<Party> {
+        return runBlocking {
+            withContext(Dispatchers.IO) {
+                val response = retrofitHandler.getLikedPartyList(sharedManager.getUserId()).execute().body()
+                if (response != null) {
+                    mixedToList(response)
+                }
+                else {
+                    mutableListOf()
+                }
+            }
+        }
     }
 }
 

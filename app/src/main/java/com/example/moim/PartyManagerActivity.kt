@@ -26,7 +26,8 @@ class PartyManagerActivity: AppCompatActivity() {
         // Edit 뷰가 없는 상태가 디폴트
         binding.constraintRoot.removeView(binding.constraintEdit)
 
-        binding.buttonConfirmModify.isEnabled = partyInformation.common.partyHead == userId
+//        binding.buttonConfirmModify.isEnabled = partyInformation.common.partyHead == userId
+        binding.buttonModify.isEnabled = partyInformation.common.partyHead == userId
 
         // TODO: PartyTypeNumber 에 따라 레이아웃 수정하기
 
@@ -43,7 +44,8 @@ class PartyManagerActivity: AppCompatActivity() {
         // 수정 상태에서 뒤로가기 버튼을 누를 경우..
         binding.buttonEditBack.setOnClickListener {
             editing = false
-
+            binding.constraintRoot.removeView(binding.constraintEdit)
+            binding.constraintRoot.addView(binding.constraintView)
         }
     }
 

@@ -47,7 +47,22 @@ class MyPartyFragment: Fragment() {
             }
         )
 
-        val partyList = runBlocking {
+        binding.recyclerMyParty.adapter = myPartyAdapter
+        binding.recyclerMyParty.layoutManager =
+            LinearLayoutManager(binding.root.context, LinearLayoutManager.VERTICAL, false)
+
+        return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        myPartyAdapter.partyList = updatePartyList()
+        myPartyAdapter.notifyDataSetChanged()
+    }
+
+    private fun updatePartyList(): MutableList<Party> {
+        return runBlocking {
             withContext(Dispatchers.IO) {
                 val response = retrofitHandler.getMyPartyList(sharedManager.getUserId()).execute().body()
                 if (response != null) {
@@ -58,14 +73,6 @@ class MyPartyFragment: Fragment() {
                 }
             }
         }
-
-        myPartyAdapter.partyList = partyList
-
-        binding.recyclerMyParty.adapter = myPartyAdapter
-        binding.recyclerMyParty.layoutManager =
-            LinearLayoutManager(binding.root.context, LinearLayoutManager.VERTICAL, false)
-
-        return binding.root
     }
 }
 
