@@ -31,8 +31,6 @@ class CreatePartyActivity: AppCompatActivity() {
         sharedManager = SharedManager(this)
         val partyTypeNumber = intent.extras?.getInt("party_type_number")!!
 
-        actionBar?.title = partyTypeKorean(partyTypeNumber)
-
         // 몇몇 View 들을 숨겨줘야 한다. 레이아웃도 맞춰서 조정해야 한다.
         when (partyTypeNumber) {
             PartyTypeNumber.Taxi -> {
@@ -78,6 +76,16 @@ class CreatePartyActivity: AppCompatActivity() {
         val placeAdapter3 = ArrayAdapter.createFromResource(this, R.array.place3, android.R.layout.simple_spinner_item)
         placeAdapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         placeSpinner3.adapter = placeAdapter3
+
+        val mealTypeSpinner = binding.spinnerMealType
+        val mealTypeAdapter = ArrayAdapter.createFromResource(this, R.array.meal_type, android.R.layout.simple_spinner_item)
+        mealTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        mealTypeSpinner.adapter = mealTypeAdapter
+
+        val outsideSpinner = binding.spinnerMealOutside
+        val outsideAdapter = ArrayAdapter.createFromResource(this, R.array.meal_outside, android.R.layout.simple_spinner_item)
+        outsideAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        outsideSpinner.adapter = outsideAdapter
 
         binding.buttonBack.setOnClickListener {
             if (!isFinishing) finish()

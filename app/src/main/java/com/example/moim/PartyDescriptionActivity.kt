@@ -3,6 +3,7 @@ package com.example.moim
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
@@ -91,7 +92,10 @@ class PartyDescriptionActivity: AppCompatActivity() {
                 binding.textPartyOption2.text = String.format(getString(R.string.meal_option2), if (mealParty.extra.outside == 1) "나가서 먹기" else "배달 시키기")
                 binding.textPartyTime.text = String.format(getString(R.string.party_datetime), dateString, timeString)
             }
-            PartyTypeNumber.Study, PartyTypeNumber.Custom -> Unit
+            PartyTypeNumber.Study, PartyTypeNumber.Custom -> {
+                binding.root.removeView(binding.linearOptions)
+                binding.textPartyTime.visibility = View.INVISIBLE
+            }
             else -> throw Error("Should not happen")
         }
 
@@ -175,7 +179,7 @@ class PartyDescriptionActivity: AppCompatActivity() {
             intent.putExtra("party_type_number", partyTypeNumber)
 
             if (binding.buttonEnterParty.text.toString() == getString(R.string.string_join)) {
-                // 새로 파티에 참가하는 경우, joinParty를 한다.
+                // 새로 파티에 참가하는 경우, joinParty 를 한다.
                 val partyType = partyTypeString(partyTypeNumber)
                 val partyId = partyInformation.common.partyId
                 when (partyTypeNumber) {

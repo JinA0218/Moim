@@ -162,11 +162,15 @@ class PartyAdapter(private val partyNumber: Int): RecyclerView.Adapter<PartyAdap
                 PartyTypeNumber.Study -> {  // 공부/프로젝트팟
                     val studyParty = party as StudyParty
 
+                    binding.root.removeView(binding.upperComplex)
+                    binding.partyNameSimple.text = studyParty.common.partyName
                     binding.partyLowerOption.text = studyParty.common.place.toWrittenString()
                 }
                 PartyTypeNumber.Custom -> {  // 나만의팟
                     val customParty = party as CustomParty
 
+                    binding.root.removeView(binding.upperComplex)
+                    binding.partyNameSimple.text = customParty.common.partyName
                     binding.partyLowerOption.text = customParty.common.place.toWrittenString()
                 }
                 else -> throw Error("partyNumber error: $partyNumber is not a valid partyNumber")

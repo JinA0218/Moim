@@ -351,7 +351,7 @@
                 />
 
             <android.widget.Button
-                android:id="@+id/button_confirm_modify"
+                android:id="@+id/button_confirm_edit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="40dp"
@@ -422,6 +422,10 @@
                 android:layout_marginEnd="30dp"
                 app:layout_constraintTop_toTopOf="@id/text_party_name"
                 app:layout_constraintBottom_toBottomOf="@id/text_party_name"
+                android:text="@string/string_user_list"
+                android:background="@drawable/text_box"
+                android:textSize="14sp"
+                android:textColor="@color/black"
                 />
 
             <TextView
@@ -513,7 +517,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="40dp"
-                app:layout_constraintWidth_percent="0.3"
+                app:layout_constraintWidth_percent="0.33"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.2"
@@ -524,18 +528,18 @@
                 />
 
             <android.widget.Button
-                android:id="@+id/button_modify"
+                android:id="@+id/button_edit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="40dp"
-                app:layout_constraintWidth_percent="0.3"
+                app:layout_constraintWidth_percent="0.33"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.8"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textSize="20sp"
                 android:textColor="@color/black"
-                android:text="@string/placeholder"
+                android:text="@string/modify_party"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

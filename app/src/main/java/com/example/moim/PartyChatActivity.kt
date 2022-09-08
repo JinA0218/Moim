@@ -121,8 +121,6 @@ class PartyChatActivity: AppCompatActivity(), CoroutineScope {
                         startActivity(intent)
                     }
                     R.id.action_menu_leave -> {
-                        // TODO: '정말로 나가시겠습니까?' 경고 팝업 보이게 하기
-                        //      + 기능 구현 (서버와 통신하는 등)
                         val builder = AlertDialog.Builder(this)
                         builder.setTitle("파티 탈퇴").setMessage("정말로 탈퇴 하실건가요?")
 
@@ -141,6 +139,12 @@ class PartyChatActivity: AppCompatActivity(), CoroutineScope {
                                     ) {
                                         if (response.isSuccessful) {
                                             Toast.makeText(applicationContext, "파티에서 탈퇴했습니다.", Toast.LENGTH_SHORT).show()
+                                            val db = AppDB.getInstance(applicationContext)!!
+                                            runBlocking {
+                                                withContext(Dispatchers.IO) {
+                                                    db.MDao().delete(MyParty(partyInformation.common.partyId))
+                                                }
+                                            }
                                             if (!isFinishing) finish()
                                         }
                                         else {

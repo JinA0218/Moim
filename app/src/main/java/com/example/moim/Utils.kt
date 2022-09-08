@@ -96,6 +96,26 @@ fun parseDateString(dateString: String): String {
     }
 }
 
+fun getScreenSize(context: Context): Size {
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+        val metrics: WindowMetrics = context.getSystemService(WindowManager::class.java).currentWindowMetrics
+        return Size(metrics.bounds.width(), metrics.bounds.height())
+    }
+    else {
+        @Suppress("DEPRECATION")
+        val display = context.getSystemService(WindowManager::class.java).defaultDisplay
+        val metrics = if (display != null) {
+            DisplayMetrics().also {
+                @Suppress("DEPRECATION")
+                display.getRealMetrics(it)
+            }
+        } else {
+            Resources.getSystem().displayMetrics
+        }
+        return Size(metrics.widthPixels, metrics.heightPixels)
+    }
+}
+
 // Parses time string and transform it to user-friendly string.
 fun parseTimeString(timeString: String): String {
     val errorString = ""
@@ -337,7 +357,7 @@ data class ResponseCreateParty(
     val partyId: Int,
 ): Serializable
 
-data class ResponseModifyParty(
+data class ResponseEditParty(
     // TODO
     val placeHolder: Int,
 ): Serializable

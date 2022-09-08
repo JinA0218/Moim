@@ -101,10 +101,30 @@ interface RetrofitHandler {
         @Body partyBody: CustomParty,
     ): Call<ResponseCreateParty>
 
-    @POST("/modify-party")
-    fun modifyParty(
-        @Body partyBody: Party,
-    ): Call<ResponseModifyParty>
+    @POST("/edit-party/taxi-party")
+    fun editTaxiParty(
+        @Body partyBody: TaxiParty,
+    ): Call<ResponseEditParty>
+
+    @POST("/edit-party/meal-party")
+    fun editMealParty(
+        @Body partyBody: MealParty,
+    ): Call<ResponseEditParty>
+
+    @POST("/edit-party/night-meal-party")
+    fun editNightMealParty(
+        @Body partyBody: MealParty,
+    ): Call<ResponseEditParty>
+
+    @POST("/edit-party/study-party")
+    fun editStudyParty(
+        @Body partyBody: StudyParty,
+    ): Call<ResponseEditParty>
+
+    @POST("/edit-party/custom-party")
+    fun editCustomParty(
+        @Body partyBody: CustomParty,
+    ): Call<ResponseEditParty>
 
     @GET("/party-user-list/{party_id}")
     fun getPartyUserList(
