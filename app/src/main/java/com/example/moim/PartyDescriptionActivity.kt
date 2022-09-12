@@ -56,10 +56,10 @@ class PartyDescriptionActivity: AppCompatActivity() {
             }
         }
         binding.buttonLike.background = if (isLikedParty == null) {
-            AppCompatResources.getDrawable(this, R.drawable.like_white)
+            AppCompatResources.getDrawable(this, R.drawable.heart)
         }
         else {
-            AppCompatResources.getDrawable(this, R.drawable.like_full)
+            AppCompatResources.getDrawable(this, R.drawable.redheart)
         }
 
 
