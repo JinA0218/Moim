@@ -1,9 +1,28 @@
 {
   "dependencies": {
-    "express": "^4.18.1",
+    "express": "4.18.1",
     "install": "^0.13.0",
     "mysql": "^2.18.1",
-    "mysql2": "^2.3.3"
+    "mysql2": "^2.3.3",
+    "socket.io": "4.5.1"
   },
-  "type": "module"
+  "type": "module",
+  "name": "moim",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jina0202/Moim.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jina0202/Moim/issues"
+  },
+  "homepage": "https://github.com/Jina0202/Moim#readme"
 }

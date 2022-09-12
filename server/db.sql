@@ -98,5 +98,24 @@ create table if not exists custom_party(
 
 create table if not exists party_user(
     party_id int(6) not null,
-    userid varchar(20) not null
+    userid varchar(20) not null,
+    username varchar(20) character set utf8 collate utf8_general_ci not null
 );
+
+create table if not exists liked_party(
+    party_id int(6) not null,
+    userid varchar(20) not null,
+    username varchar(20) character set utf8 collate utf8_general_ci not null
+);
+
+create table if not exists chatRoom(
+    chat_id int(2) not null primary key,
+    chat_type varchar(10) not null,
+    party_id int(6) not null,
+    userid varchar(20) not null,
+    username varchar(20) character set utf8 collate utf8_general_ci not null,
+    chat_content varchar(500) character set utf8 collate utf8_general_ci,
+    chat_time TIME,
+    chat_date DATE
+);
+

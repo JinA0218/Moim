@@ -1,18 +1,100 @@
 import express from 'express';
 import { hash_password, verify } from './encrypt.js';
 import debug from '../debug.js';
-import {connection} from '../config/connection.js';
-import {getPartyList, createTaxiParty, joinParty, leaveParty, editTaxiParty} from '../party/partyList.js';
+import {connection, app, io, server} from '../config/connection.js';
+import {getPartyList, joinParty, leaveParty, getParty, deleteParty} from '../party/partyList.js';
+import {getPartyUserList, partyChatList} from '../chatting/partyUserList.js'
+import {myParty} from '../party/my/myParty.js';
+import {Like, LikedParty} from '../party/my/myLikedParty.js';
+import {createTaxiParty} from '../party/taxiParty/createTaxiParty.js';
+import {editTaxiParty} from '../party/taxiParty/editTaxiParty.js';
+import {createMealParty} from '../party/mealParty/createMealParty.js';
+import {editMealParty} from '../party/mealParty/editMealParty.js';
+import {createNightMealParty} from '../party/nightMealParty/createNightMealParty.js';
+import {editNightMealParty} from '../party/nightMealParty/editNightMealParty.js';
+import {createStudyParty} from '../party/studyParty/createStudyParty.js';
+import {editStudyParty} from '../party/studyParty/editStudyParty.js';
+import {createCustomParty} from '../party/customParty/createCustomParty.js';
+import {editCustomParty} from '../party/customParty/editCustomParty.js';
+
+
 
 global.global_id=0;
+global.chat_id=0;
 var id_array=[0,0,0,0,0];//order same as table order : taxi, meal, etc
 
 const port=process.env.PORT||80;
 
 connection.connect();//필요??
   
-const app=express();
+
 app.use(express.json());
+
+//socket.io
+let a=0;
+
+io.on('connection',(socket)=>{
+    debug('a user connected');
+
+    // // //join chatting room
+    // socket.on('joinChat', chatItem=>{
+    // a=num;
+    // socket.join(chatItem.party_id,()=>{
+    //     debug(`USRID : ${chatItem.userid}, USERNAME : ${chatItem.username} joined room PARTYID : ${party_id}`);
+    //     io.to(chatItem.party_id).emit('joinChatting',chatItem);
+    // })
+    // })
+
+    // //leave chatting room
+    // socket.on('leaveChat', chatItem=>{
+    //     socket.leave(chatItem.party_id,()=>{
+    //     debug(`USRID : ${chatItem.userid}, USERNAME : ${chatItem.username} left room PARTYID : ${party_id}`);
+    //     io.to(chatItem.party_id).emit('leaveChatting', chatItem);
+    //     })
+    // })
+    
+    //getting user_info -> 받은 party를 바탕으로 소켓 join
+    socket.on('iAm',user_info=>{
+        debug(`USER INFO : ${JSON.stringify(user_info)}`);
+        //socket이 어떤 party에 있는지 알아야
+        const party_id=user_info.party_id;
+        const userid=user_info.userid;
+
+        if (party_id!==undefined && party_id!==null&& userid!==undefined &&userid!==null){
+
+            socket.join(String(party_id));
+            socket.on('chatMessage',chatItem=>{
+                //insert chatItem to chatRoom
+                chatItem=JSON.parse(chatItem)
+                chatItem.chat_id=chat_id++;
+                debug(`CHAT ITEM : ${JSON.stringify(chatItem)}`);
+                connection.query('insert into chatRoom(chat_id, chat_type, party_id, userid, username, chat_content, chat_time, chat_date)\
+                values (?,?,?,?,?,?,?,?)',[chatItem.chat_id, chatItem.chat_type, chatItem.party_id, chatItem.userid, chatItem.username, chatItem.chat_content, chatItem.chat_time, chatItem.chat_date], async(error, rows, field)=>{
+                    if (error){
+                        // Query error again..
+                        debug("chatMessage_chatRoom failed due to query error 4");
+                        debug(error.message);
+                    }
+                    else{
+                        debug(`chatMessage_chatRoom ${JSON.stringify(chatItem)} successfully registered.`);
+                        debug(`Rows : ${JSON.stringify(rows)}`);
+                    }
+                })
+                io.to(String(party_id)).emit('chatMessage',chatItem);
+
+            });
+        }
+        
+    })
+    
+    socket.on('disconnect',()=>{
+        debug('user disconnected');
+    });
+})
+
+
+
+
 
 //test
 app.get('/',(req, res)=>{
@@ -45,6 +127,26 @@ for(let i=0;i<5;i++){
         }
     })
 }
+
+//update global variable chat_id
+connection.query('select chat_id from chatRoom order by chat_id desc limit 1;',async(error, rows, field)=>{
+    debug(`Rows in user.js for chat_id : ${JSON.stringify(rows)}`)
+    if(error){
+        // Query error.->mysql error: not null but null or not database or no table etc
+        debug("GETTING CHAT ID failed due to query error.");
+        debug(error.message);
+    }
+    else if(rows.length==0){//taxi_party has no element
+        debug(`There is no chat_id in chatRoom. Set chat_id to 0`);
+        chat_id=0;
+    }
+    else{//taxi_party has more than 1 element
+        debug(`Set taxi_global_id to the rows length to ${rows.length}.`);
+        chat_id=rows[0].chat_id;
+        chat_id++;
+        debug(`CHAT_ID CHECK!!!! : ${chat_id}`)
+    }
+})
 
 
 //login
@@ -205,7 +307,7 @@ app.get("/party-list/:type", getPartyList);
 app.post("/join-party/:type",joinParty);
 
 //delete (party_id, userid) in party_user
-app.post("/leave-party/:type",leaveParty);
+app.post("/leave-party",leaveParty);
 
 //create new taxi-party (insert into taxi_party table)
 app.post("/create-party/taxi-party", createTaxiParty);
@@ -213,11 +315,60 @@ app.post("/create-party/taxi-party", createTaxiParty);
 //edit taxi-party
 app.post("/edit-party/taxi-party", editTaxiParty);
 
-//get : 성혁오빠가 요청 보냈을 때
+//get : 성혁오빠가 요청 보냈을 때->full description 정보들 보여주기//party_id(url: party_id), type query string으로 받음.
+app.get("/party", getParty);
+
+//  CHATTING
+//get party-user-list
+app.get("/party-user-list/:party_id", getPartyUserList);//get party-id from client
 
 //delete type (taxi-party, meal-party etc)
+app.post('/delete-party/:type', deleteParty);
+
+//showing my party
+app.get('/my-party/:userid',myParty);
+
+//like
+app.post('/like',Like);
+
+//liked-party
+app.get("/liked-party/:userid",LikedParty);
+
+//party-chat-list
+app.get('/party-chat-list',partyChatList);
+
+/// MEAL
+//create-party
+app.post("/create-party/meal-party", createMealParty);
+
+//edit-party
+app.post("/edit-party/meal-party", editMealParty);
+
+//NIGHT_MEAL
+//create-party
+app.post("/create-party/night-meal-party", createNightMealParty);
+
+//edit-party
+app.post("/edit-party/night-meal-party", editNightMealParty);
+
+//STUDY
+//create-party
+app.post("/create-party/study-party", createStudyParty);
+
+//edit-party
+app.post("/edit-party/study-party", editStudyParty);
+
+//CUSTOM
+//create-party
+app.post("/create-party/custom-party", createCustomParty);
+
+//edit-party
+app.post("/edit-party/custom-party", editCustomParty);
+
+
 // connection.end();
 
-app.listen(port,()=>{
+server.listen(port,()=>{
     console.log("<> Server start. Running on port " +port);
-})
+})//원래 app 이었음
+

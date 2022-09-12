@@ -1,6 +1,8 @@
 // import Connection from 'mysql2/typings/mysql/lib/Connection';
 import debug from '../debug.js';
 import {connection} from '../config/connection.js';
+import {io} from '../config/connection.js';
+
 // import { global_id } from '../global.js';
 
 //show party list : only when current_count < maximum_count ->current_count가 넘어갈 가능성이 생기나?
@@ -10,7 +12,7 @@ const getPartyList=function (req, res){
     
     debug(`GET /party-list\t${type}`);
 
-    if (type != undefined ) {
+    if (type !== undefined ) {
         var query="";
         var query_list=[];
 
@@ -67,8 +69,8 @@ const getPartyList=function (req, res){
                         extra : {
                         detailed_start_place : rows[i].detailed_start_place,
                         destination: rows[i].destination,
-                        date: rows[i].party_date,
-                        time: rows[i].party_time
+                        party_date: rows[i].party_date,
+                        party_time: rows[i].party_time
                         }
                     }
                     )
@@ -82,118 +84,6 @@ const getPartyList=function (req, res){
     }
 }
 
-//create new party (insert to partylist)
-const createTaxiParty=function (req, res){
-    const party_head=req.body.party_head;//userid of the head of the party
-    const party_id=global_id;
-    global_id+=1;
-    const party_name=req.body.party_name;
-    const has_place=req.body.has_place;
-    const place1=req.body.place1;
-    const place2=req.body.place2;
-    const place3=req.body.place3;
-    const detailed_start_place=req.body.detailed_start_place;
-    const destination=req.body.destination;
-    const party_date=req.body.party_date;
-    const party_time=req.body.party_time;
-    const current_count=req.body.current_count;//1
-    const maximum_count=req.body.maximum_count;
-    const detailed_description=req.body.detailed_description;
-    const count_difference=maximum_count-current_count;
-    
-    debug(`POST /create-party/\ttaxi-party`);
-    
-    if(party_head!==undefined){
-        //check whether the party_head is valid (userid exists)
-        connection.query('select userid from users where userid=?', [party_head], async(error, rows, field)=>{
-            if(error){
-                // Query error.
-                debug("createTaxiParty_checking userid failed due to query error 0");
-                debug(error.message);
-                res.status(400).send(error.message);
-            }
-            else if(rows.length==0){
-                debug(`PARTY HEAD is not valid. USERID ${party_head} doesn't exist.`);
-                res.status(400).send("PARTY HEAD is not valid. The USERID doesn't exist.");
-            }
-            else{//party_head is valid (userid exists)
-                if (party_id !== undefined &&party_head!==undefined&& party_name !== undefined && has_place!==undefined && place1!==undefined && place2!==undefined &&
-                    place3!==undefined && detailed_start_place!==undefined && destination!==undefined && party_date!==undefined &&
-                    party_time!==undefined && current_count!==undefined && maximum_count!==undefined && detailed_description!==undefined && count_difference!==undefined
-                    ) {
-                        connection.query('select party_id from taxi_party where party_id=?', [party_id], async (error, rows, field) =>{
-                    if (error) {
-                        // Query error.
-                        debug("createTaxiParty failed due to query error 1");
-                        debug(error.message);
-                        res.status(400).send(error.message);
-                    }
-                    else if (rows.length > 0) {
-                        debug(`PARTY ID ${party_id} already exists.`);
-                        res.status(400).send("The PARTY ID already exists.");
-                    }
-                    else {
-                        debug("OK, you can use this PARTY ID..");
-                        
-                        // 1. insert new row in type-party
-                        connection.query('insert into taxi_party(party_id, party_head, party_name, has_place, place1, place2, place3, detailed_start_place, destination, party_date, party_time, current_count, maximum_count, count_difference, detailed_description)\
-                values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                [party_id,party_head, party_name,has_place,place1,place2,place3,detailed_start_place,destination,party_date,party_time,current_count,maximum_count,count_difference, detailed_description],
-                async(error, rows, field)=> {
-                            if (error) {
-                                // Query error again..
-                                debug("createTaxiParty failed due to query error 2");
-                                debug(error.message);
-                                res.status(400).send(error.message);
-                            }
-                            else {
-                                debug(`createTaxiParty PARTY ID : ${party_id}, successfully registered.`);
-
-                                        // 2. insert new row(party_head) in party_user
-                                connection.query('insert into party_user(party_id, userid) values (?,?)', [party_id, party_head], async(error, rows, field)=> {
-                                    if (error) {
-                                        // Query error again..
-                                        debug("createPartyUser_addPartyHead failed due to query error 2");
-                                        debug(error.message);
-                                        res.status(400).send(error.message);
-                                    }
-                                    else {
-                                        debug(`createPartyUser_addPartyHead PARTY ID : ${party_id}, PARTY_HEAD : ${party_head} successfully registered.`);
-                                        res.status(200).send("createTaxiParty and createPartyUser_addPartyHead succeeded.");
-                                    }
-                                })
-                            }
-                        })
-                    }
-                
-                });
-                }
-                else {
-                    debug(`party_head : ${party_head}`)
-                    debug(`party_id : ${party_id}`)
-                    debug(`party_name : ${party_name}`)
-                    debug(`has_place : ${has_place}`)
-                    debug(`place1 : ${place1}`)
-                    debug(`place2 : ${place2}`)
-                    debug(`place3 : ${place3}`)
-                    debug(`detailed_start_place : ${detailed_start_place}`)
-                    debug(`destination : ${destination}`)
-                    debug(`party_date : ${party_date}`)
-                    debug(`party_time : ${party_time}`)
-                    debug(`current_count : ${current_count}`)
-                    debug(`maximum_count : ${maximum_count}`)
-                    debug(`count_difference : ${count_difference}`)
-                    debug(`detailed_description : ${detailed_description}`)
-
-                    res.status(400).send("Bad request body; you must include party_id, party_head, party_name etc.");
-                }
-            }
-        })
-    }
-    else {
-        res.status(400).send("Bad request body; you must include party_head.");
-    }
-}
 
 //join-party
 const joinParty=function (req, res){
@@ -201,6 +91,7 @@ const joinParty=function (req, res){
     const type=input_type.replace('-','_');
     const party_id=req.body.party_id;
     const userid=req.body.userid;
+    const username=req.body.username;
     
     debug(`POST /join-party/\tPARTY ID : ${party_id}, USREID : ${userid}`);
     
@@ -238,43 +129,93 @@ const joinParty=function (req, res){
                         var current_count=rows[0].current_count;
                         const maximum_count=rows[0].maximum_count;
 
-                        //check whether (party_id, userid) exist
-                        connection.query('select * from party_user where party_id=? and userid=?',[party_id,userid],async(error, rows, field)=>{
-                            if(error){
-                                 // Query error again..
-                                 debug("joinParty failed due to query error 2");
-                                 debug(error.message);
-                                 res.status(400).send(error.message);
+                        //check whether (userid, username) exists in users table
+                        connection.query('select * from users where userid=? and username=?',[userid, username],async(error, rows, field)=>{
+                            if (error) {
+                                // Query error again..
+                                debug("joinParty failed due to query error 5");
+                                debug(error.message);
+                                res.status(400).send(error.message);
                             }
+                            else if(rows.length==0){
+                                debug(`(USER ID : ${userid}, USERNAME : ${username}) doesn't exist in users table.`);
+                                res.status(400).send(`(USER ID : ${userid}, USERNAME : ${username}) doesn't exist in users table.`);
+                            }
+                            else{// (userid, username) exists in users table
+                                    //check whether (party_id, userid) exist
+                            connection.query('select * from party_user where party_id=? and userid=? and username=?',[party_id,userid, username],async(error, rows, field)=>{
+                                if(error){
+                                    // Query error again..
+                                    debug("joinParty failed due to query error 2");
+                                    debug(error.message);
+                                    res.status(400).send(error.message);
+                                }
 
-                            else if(rows.length>0){//(party_id, userid) already exists
-                                debug(`(PARTY ID : ${party_id}, USERID : ${userid}) already exist in party_user table.`);
-                                res.status(400).send("The PARTY ID and USREID already exist in party_user table.");
-                            }
-                            else if(current_count==maximum_count){
-                                //if current_count==maximum_cout, (party_id, userid) cannot be inserted
-                                debug(`cannot insert] CURRENT_COUNT : ${current_count} == MAXIMUM_COUNT : ${maximum_count}`);
-                                res.status(400).send(`cannot insert] CURRENT_COUNT : ${current_count} == MAXIMUM_COUNT : ${maximum_count}`);
-                            }
-                            else{//(party_id, userid) doesn't exist-> need to insert
-                                //insert new row(party_id, userid) in party_user
-                                connection.query('insert into party_user(party_id, userid) values (?,?)', [party_id,userid], async(error, rows, field)=> {
-                                    if (error) {
-                                        // Query error again..
-                                        debug("joinParty failed due to query error 3");
-                                        debug(error.message);
-                                        res.status(400).send(error.message);
-                                    }
-                                    else {//insert
-                                        debug(`joinParty PARTY ID : ${party_id}, USERID: ${userid} successfully registered.`);
-                                        debug(`Rows : ${JSON.stringify(rows)}`)//not that important data included
-                                        //update current_count in type table
-                                        connection.query('update ?? set current_count=?, count_difference=? where party_id=?',[type, current_count+1, maximum_count-current_count-1,party_id])
-                                        res.status(200).send({current_count: current_count+1});//"joinParty succeeded."
-                                    }
-                                })
+                                else if(rows.length>0){//(party_id, userid, username) already exists
+                                    debug(`(PARTY ID : ${party_id}, USERID : ${userid}, UESERNAME : ${username}) already exist in party_user table.`);
+                                    res.status(400).send("The PARTY ID and USREID and USERNAME already exist in party_user table.");
+                                }
+                                else if(current_count==maximum_count){
+                                    //if current_count==maximum_cout, (party_id, userid) cannot be inserted
+                                    debug(`cannot insert] CURRENT_COUNT : ${current_count} == MAXIMUM_COUNT : ${maximum_count}`);
+                                    res.status(400).send(`cannot insert] CURRENT_COUNT : ${current_count} == MAXIMUM_COUNT : ${maximum_count}`);
+                                }
+                                else{//(party_id, userid, username) doesn't exist-> need to insert
+                                    //insert new row(party_id, userid, username) in party_user
+                                    debug(`ROWS : ${rows}`)
+                                    connection.query('insert into party_user(party_id, userid, username) values (?,?,?)', [party_id,userid, username], async(error, rows, field)=> {
+                                        if (error) {
+                                            // Query error again..
+                                            debug("joinParty failed due to query error 3");
+                                            debug(error.message);
+                                            res.status(400).send(error.message);
+                                        }
+                                        else {//insert succeed
+                                            debug(`joinParty PARTY ID : ${party_id}, USERID: ${userid}, USERNAME : ${username} successfully registered.`);
+                                            debug(`Rows : ${JSON.stringify(rows)}`)//not that important data included
+                                            //update current_count in type table
+                                            connection.query('update ?? set current_count=?, count_difference=? where party_id=?',[type, current_count+1, maximum_count-current_count-1,party_id])
+                                            //TODO if(error) 부분!!
+
+                                            //create join chatItem and insert to table chatRoom
+                                            const chatItem={
+                                                chat_id : chat_id++,
+                                                chat_type : "join",
+                                                party_id : party_id,
+                                                userid: userid,
+                                                username: username,
+                                                chat_content : "",
+                                                chat_time : null,
+                                                chat_date : null
+                                            }
+                                            connection.query('insert into chatRoom(chat_id, chat_type, party_id, userid, username, chat_content, chat_time, chat_date)\
+                                            values (?,?,?,?,?,?,?,?)',[chatItem.chat_id, chatItem.chat_type, chatItem.party_id, chatItem.userid, chatItem.username, chatItem.chat_content, chatItem.chat_time, chatItem.chat_date], async(error, rows, field)=>{
+                                                if (error){
+                                                    // Query error again..
+                                                    debug("joinParty_chatRoom failed due to query error 4");
+                                                    debug(error.message);
+                                                    res.status(400).send(error.message);
+                                                }
+                                                else{
+                                                    debug(`joinParty_chatRoom ${JSON.stringify(chatItem)} successfully registered.`);
+                                                    debug(`Rows : ${JSON.stringify(rows)}`);
+                                                    io.to(String(party_id)).emit('chatMessage',chatItem);
+                                                    res.status(200).send({current_count: current_count+1});//"joinParty succeeded."
+                                                }
+                                            })
+
+                                            
+
+
+                                            
+                                        }
+                                    })
+                                }
+                            })
                             }
                         })
+
+                        
                         
                     }
                 
@@ -294,11 +235,12 @@ const joinParty=function (req, res){
 
 //leave-party
 const leaveParty=function (req, res){
-    const input_type=req.params.type;
+    const input_type=req.body.party_type;
     const type=input_type.replace('-','_');
     const party_id=req.body.party_id;
     const userid=req.body.userid;
-    
+    const username=req.body.username;
+
     debug(`POST /leave-party/\tPARTY ID : ${party_id}, USREID : ${userid}`);
     
     if(userid!==undefined){
@@ -334,45 +276,92 @@ const leaveParty=function (req, res){
                         var current_count=rows[0].current_count;
                         const maximum_count=rows[0].maximum_count;
 
-                        //check whether (party_id, userid) already exists
-                        connection.query('select * from party_user where party_id=? and userid=?',[party_id,userid],async(error, rows, field)=>{
+                        //check whether (userid, username) exists in users table
+                        connection.query('select * from users where userid=? and username=?', [userid, username],async(error, rows, field)=>{
                             if(error){
-                                 // Query error again..
-                                 debug("leaveParty failed due to query error 2");
-                                 debug(error.message);
-                                 res.status(400).send(error.message);
+                                // Query error again..
+                                debug("leaveParty failed due to query error 5");
+                                debug(error.message);
+                                res.status(400).send(error.message);
                             }
-                            else if(rows.length==0){//(party_id, userid) doesn't exists
-                                debug(`(PARTY ID : ${party_id}, USERID : ${userid}) doesn't exist in party_user table.`);
-                                res.status(400).send("The PARTY ID and USREID doesn't exist in party_user table.");
+                            else if(rows.length==0){
+                                debug(`(USER ID : ${userid}, USERNAME : ${username}) doesn't exist in users table.`);
+                                res.status(400).send(`(USER ID : ${userid}, USERNAME : ${username}) doesn't exist in users table.`);
                             }
-                            else if(current_count==0){
-                                //if current_count==0, (party_id, userid) cannot be deleted
-                                debug(`cannot delete] CURRENT_COUNT : ${current_count}, less than 0 people is impossible.`);
-                                res.status(400).send(`cannot delete] CURRENT_COUNT : ${current_count}, less than 0 people is impossible.`);
-                            }
-                            else{//(party_id, userid) exists-> need to delete
-                                //delete row(party_id, userid) in party_user
-                                connection.query('delete from party_user where party_id=? and userid=?', [party_id,userid], async(error, rows, field)=> {
-                                    if (error) {
-                                        // Query error again..
-                                        debug("leaveParty failed due to query error 3");
-                                        debug(error.message);
-                                        res.status(400).send(error.message);
-                                    }
-                                    else {//delete
-                                        debug(`leaveParty PARTY ID : ${party_id}, USERID: ${userid} successfully deleted.`);
-                                        debug(`Rows : ${JSON.stringify(rows)}`)//not that important data included
-                                        //update current_count in type table
-                                        connection.query('update ?? set current_count=?, count_difference=? where party_id=?',[type, current_count-1, maximum_count-current_count+1,party_id])
-                                        res.status(200).send({current_count: current_count-1});//"leaveParty succeeded."
-                                    }
-                                })
+                            else{
+                                // (userid, username) exists in users table
+                                    //check whether (party_id, userid, username) exist in party_user
+                            connection.query('select * from party_user where party_id=? and userid=? and username=?',[party_id,userid, username],async(error, rows, field)=>{
+                                if(error){
+                                    // Query error again..
+                                    debug("leaveParty failed due to query error 2");
+                                    debug(error.message);
+                                    res.status(400).send(error.message);
+                                }
+
+                                else if(rows.length==0){//(party_id, userid, username) doesn't exists
+                                    debug(`(PARTY ID : ${party_id}, USERID : ${userid}, UESERNAME : ${username}) doesn't exist in party_user table.`);
+                                    res.status(400).send("The PARTY ID and USREID and USERNAME doesn't exist in party_user table.");
+                                }
+                                else if(current_count==0){
+                                    //if current_count==maximum_cout, (party_id, userid) cannot be inserted
+                                    debug(`cannot delete] CURRENT_COUNT : ${current_count}, it's zero.`);
+                                    res.status(400).send(`cannot delete] CURRENT_COUNT : ${current_count}, it's zero.`);
+                                }
+                                else{//(party_id, userid) exists-> need to delete
+                                    //delete row(party_id, userid, username) in party_user
+                                    debug(`ROWS : ${rows}`)
+                                    connection.query('delete from party_user where party_id=? and userid=? and username=?', [party_id,userid, username], async(error, rows, field)=> {
+                                        if (error) {
+                                            // Query error again..
+                                            debug("leaveParty failed due to query error 3");
+                                            debug(error.message);
+                                            res.status(400).send(error.message);
+                                        }
+                                        else {//delete
+                                            debug(`leaveParty PARTY ID : ${party_id}, USERID: ${userid}, USERNAME : ${username} successfully deleted.`);
+                                            debug(`Rows : ${JSON.stringify(rows)}`)//not that important data included
+                                            //update current_count in type table
+                                            connection.query('update ?? set current_count=?, count_difference=? where party_id=?',[type, current_count-1, maximum_count-current_count+1,party_id])
+                                            //TODO if(error) 부분!!
+
+                                            //create leave chatItem and insert delete info into table chatRoom
+                                            const chatItem={
+                                                chat_id : chat_id++,
+                                                chat_type : "leave",
+                                                party_id : party_id,
+                                                userid: userid,
+                                                username: username,
+                                                chat_content : "",
+                                                chat_time : null,
+                                                chat_date : null
+                                            }
+                                            //delete from table chatRoom
+                                            connection.query('insert into chatRoom(chat_id, chat_type, party_id, userid, username, chat_content, chat_time, chat_date)\
+                                            values (?,?,?,?,?,?,?,?)',[chatItem.chat_id, chatItem.chat_type, chatItem.party_id, chatItem.userid, chatItem.username, chatItem.chat_content, chatItem.chat_time, chatItem.chat_date], async(error, rows, field)=>{
+                                                if (error){
+                                                    // Query error again..
+                                                    debug("leaveParty_chatRoom failed due to query error 4");
+                                                    debug(error.message);
+                                                    res.status(400).send(error.message);
+                                                }
+                                                else{
+                                                    debug(`leaveParty_chatRoom ${JSON.stringify(chatItem)} successfully registered.`);
+                                                    debug(`Rows : ${JSON.stringify(rows)}`);
+                                                    io.to(String(party_id)).emit('chatMessage',chatItem);
+                                            //TODO : socket.leave()
+                                                    res.status(200).send({current_count: current_count-1});//"joinParty succeeded."
+                                                }
+                                            })
+                                            
+                                            
+                                        }
+                                    })
+                                }
+                            })
                             }
                         })
-                        
                     }
-                
                 });
                 }
                 else {
@@ -388,4 +377,129 @@ const leaveParty=function (req, res){
 
 
 
-export {getPartyList, createTaxiParty, joinParty, leaveParty};
+//get Party
+const getParty=function (req, res){
+    const input_type=req.query.type;
+    const type=input_type.replace('-','_');
+    const party_id=req.query.party_id;
+
+    debug(`GET /party\tTYPE : ${type}, PARTY_ID : ${party_id}`);
+
+    if (type != undefined&&party_id!==undefined ) {
+
+        connection.query('select * from ?? where party_id=?',[type, party_id], async(error, rows, field)=>{
+            if (error) {
+                // Query error.->mysql error: not null but null or not database or no table etc
+                debug("party failed due to query error.");
+                debug(error.message);
+                res.status(400).send(error.message);
+            }
+            else if(rows.length==0){//the party_id doesn't exist.
+                debug(`PARTY ID : ${party_id} doesn't exist.`)
+                res.status(400).send(`PARTY ID : ${party_id} doesn't exist.`)//400: bad request (client's request is wrong.)
+            }
+            else {
+                debug("Rows : "+JSON.stringify(rows));
+                debug("party success.");
+                const rows_json={
+                        common: {
+                        party_id : rows[0].party_id,
+                        party_name : rows[0].party_name,
+                        party_head : rows[0].party_head,
+                        place : {
+                        has_place : rows[0].has_place,
+                        place1 : rows[0].place1,
+                        place2 : rows[0].place2,
+                        place3 : rows[0].place3
+                    },
+                        current_count : rows[0].current_count,
+                        maximum_count : rows[0].maximum_count,
+                        detailed_description : rows[0].detailed_description,
+                        count_difference : rows[0].count_difference
+                    },
+                        extra : {
+                        detailed_start_place : rows[0].detailed_start_place,
+                        destination: rows[0].destination,
+                        party_date: rows[0].party_date,
+                        party_time: rows[0].party_time
+                        }
+                    }
+                res.status(200).send(rows_json);
+            }
+        });
+    }
+    else{
+        res.status(400).send("Bad request body; you must include type or party_id.");
+    }
+}
+
+//delete-party
+const deleteParty=function (req, res){
+    const input_type=req.params.type;
+    const type=input_type.replace('-','_');
+    const party_id=req.body.party_id;
+
+    debug(`POST /delete-party/\tTYPE : ${type}, PARTY ID : ${party_id}`);
+    
+    if(type!==undefined && party_id!==undefined){
+        //check whether the type exists
+        const type_arr=['taxi_party', 'meal_party', 'night_meal_party','study_party','custom_party']
+        if(type_arr.includes(type)){//type exists
+            debug(`TYPE : ${type} exists.`)
+            //check whether party_id exists
+            connection.query('select * from ?? where party_id=?', [type, party_id], async(error, rows, field)=>{
+                if(error){
+                    // Query error.
+                    debug("deleteParty failed due to query error 0");
+                    debug(error.message);
+                    res.status(400).send(error.message);
+                }
+                else if(rows.length==0){
+                    debug(`PARTY ID ${party_id} doesn't exist.`);
+                    res.status(400).send("PARTY ID doesn't exist.");
+                }
+                else{//PARTY ID exists
+                    //delete that party in type table / delete users in party_user table
+                    connection.query('delete from ?? where party_id=?', [type, party_id], async (error, rows, field) =>{
+                    if (error) {
+                        // Query error.
+                        debug("deleteParty failed due to query error 1");
+                        debug(error.message);
+                        res.status(400).send(error.message);
+                    }
+                    else {
+                        debug(`deleteParty PARTY ID : ${party_id} in TYPE : ${type} succeed.`);
+                        debug(`ROWS : ${JSON.stringify(rows)}`)
+
+                        //delete users in party_user included in that party_id
+                        connection.query('delete from party_user where party_id=?', [party_id], async(error, rows, field)=>{
+                            if(error){
+                                // Query error again..
+                                debug("deleteParty failed due to query error 2");
+                                debug(error.message);
+                                res.status(400).send(error.message);
+                            }
+                            else{
+                                debug(`deleteParty in party_user succeed.`);
+                                res.status(200).send(`deleteParty in table TYPE : ${type}, party_user succeed.`);
+                            }
+                        })
+                    }
+                });
+                    
+                }
+            })
+        }
+        else{
+            debug(`TYPE : ${type} doesn't exist.`)
+            res.status(400).send("TYPE doesn't exist.");
+        }
+        
+    }
+    else {
+        res.status(400).send("Bad request body; you must include type or party_id.");
+    }
+}
+
+
+export {getPartyList, joinParty, leaveParty, getParty, deleteParty};
